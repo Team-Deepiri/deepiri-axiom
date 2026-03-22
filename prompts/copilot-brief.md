@@ -4,7 +4,7 @@
 
 **Stack:** Microservices (Express+Prisma+Postgres), API gateway, React+Vite frontend, Python FastAPI AI (Cyrex, Persola, LI, modelkit, Helox, PrismPipe). Redis, Kafka, Milvus, Influx, MinIO as needed. Docker Compose locally; K8s/Skaffold for clusters.
 
-**Layout:** `deepiri-platform` is the main monorepo (npm workspaces + submodules); many services also exist as standalone Team-Deepiri repos.
+**Layout:** Prefer the **install-generated workspace snapshot** in full Copilot/AXIOM instructions when present; otherwise `docs/` + root `README.md`. Monorepos often use npm workspaces + submodules; related services may live in separate Team-Deepiri repos.
 
 **Rules:** Service boundaries; no cross-service DB access. Gateway/auth are trust boundaries. Prisma migrations owned per service. No secrets in code. Call out doc vs code drift.
 

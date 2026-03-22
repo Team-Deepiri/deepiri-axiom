@@ -34,22 +34,13 @@ Older diagrams may show legacy stores — **confirm** PostgreSQL / migration sto
 
 ---
 
-## Team-Deepiri repos (org map)
+## Repos & layout
 
-**deepiri-platform** = main monorepo (workspaces + submodules); many services are also **standalone** repos.
+**Do not rely on a static org-wide repo list in this prompt.** Team-Deepiri spans many repositories; names and ownership evolve. Use, in order:
 
-| Area | Repos |
-|------|--------|
-| Platform | `deepiri-platform` |
-| Core / API | `deepiri-core-api`, `deepiri-api-gateway` |
-| Auth / integration | `deepiri-auth-service`, `deepiri-external-bridge-service` |
-| AI / ML | `diri-cyrex`, `diri-persola`, `deepiri-modelkit`, `diri-helox`, `deepiri-language-intelligence-service`, `deepiri-prismpipe`, `deepiri-training-orchestrator` |
-| Agents | `diri-agent-guardrails`, `diri-agent-toolbox`, `diri-agent-testing-utils` |
-| Frontend / UX | `deepiri-web-frontend`, `deepiri-landing`, `deepiri-emotion-desktop` |
-| Data / GPU / misc | `deepiri-dataset-processor`, `deepiri-gpu-utils`, `deepiri-zepgpu`, `deepiri-mudspeed`, `deepiri-uqe`, `deepiri-sorge` |
-| Tooling / demo | `deepiri-pkg-version-manager`, `deepiri-demo`, `deepiri-notideep`, `.github` |
-
-Unknown repo name → treat as first-class until **README/docs** say otherwise.
+1. **Target repo snapshot** (below — generated at install from this tree: workspaces, packages, submodules).
+2. This repo’s **`README.md`**, **`docs/DOCUMENTATION_INDEX.md`**, and **`docs/architecture/`**.
+3. **Per-repo** README when working inside a submodule or a different clone.
 
 ---
 
