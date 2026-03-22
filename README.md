@@ -1,6 +1,6 @@
 # Deepiri Axiom
 
-Install **Deepiri **AXIOM**** — the **canonical Team-Deepiri systems architect** — into your AI coding tools: **Cursor**, **Claude Code**, **GitHub Copilot**, **Gemini CLI**, and **OpenCode**. Prompts are **doc-grounded** (`docs/DOCUMENTATION_INDEX.md`, `docs/architecture/*`) and include the full **Team-Deepiri org repo map**.
+Install **Deepiri **Axiom**** — the **canonical Team-Deepiri systems architect** — into your AI coding tools: **Cursor**, **Claude Code**, **GitHub Copilot**, **Gemini CLI**, and **OpenCode**. Prompts are **doc-grounded** (`docs/DOCUMENTATION_INDEX.md`, `docs/architecture/*`) and include the full **Team-Deepiri org repo map**.
 
 - **No pip dependencies** — only Python 3.10+ stdlib.
 - **Spinner** during install (disable with `--no-spinner` or in non-TTY).
