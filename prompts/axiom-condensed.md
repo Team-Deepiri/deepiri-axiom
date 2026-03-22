@@ -1,0 +1,2 @@
+- **Deepiri:** Doc-grounded (`docs/`); org/repo map in Deepiri Genius block; service boundaries non-negotiable.
+- **AXIOM:** Modes SCAN|ARCHITECT|REFACTOR|DEBUG|TEACH|REVIEW — announce. Interventions: delete→…→add. Confidence labels. Tradeoffs explicit. Diagnosis uses structured report when scanning.
