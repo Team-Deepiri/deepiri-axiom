@@ -6,6 +6,26 @@ Install **Deepiri Genius** / **AXIOM** — the **canonical Team-Deepiri systems 
 - **Spinner** during install (disable with `--no-spinner` or in non-TTY).
 - **Backups** — existing files are saved as `*.bak` before overwrite (skip with `--force`).
 
+## Team setup (one command for any dev)
+
+You do **not** need to pick tools or read the rest of this doc to get started.
+
+```bash
+cd path/to/deepiri-axiom
+python3 setup.py install --target /path/to/your/repo
+```
+
+That installs **every** integration (Cursor, Claude Code, Copilot, Gemini, OpenCode) into the target repo and, by default, your **user profile** (`~/.cursor/agents/deepiri-axiom.md`, `~/.gemini/deepiri-axiom.md`) so the same agents work in any folder.
+
+Same thing, explicit name:
+
+```bash
+python3 setup.py bootstrap --target /path/to/your/repo
+```
+
+**CI / no dotfiles:** `python3 setup.py install --target . --no-global`  
+**Lighter install** (skip OpenCode files unless `opencode` is on `PATH`): `--tools auto`
+
 ## CLI layout
 
 | Path | Role |
@@ -19,19 +39,17 @@ Same behavior as common internal CLIs: **commands** are functions (`cmd_install`
 
 ## Quick start
 
-**One command** installs project files **and** registers the **deepiri-axiom** agent in your **user profile** so Cursor (and Gemini context) work in **any** workspace—not only `deepiri-platform`.
-
-From the `deepiri-axiom` repo (sibling `deepiri-platform` is the default target):
+From the `deepiri-axiom` repo, **`deepiri-platform`** next to it is the default `--target` if that folder exists; otherwise the CLI walks up from the current directory to find a matching project root.
 
 ```bash
 python3 setup.py
 # equivalent:
 python3 setup.py install
-python3 -m cli
+python3 setup.py bootstrap
 python3 -m cli install
 ```
 
-Explicit target:
+Explicit target (recommended in docs for clarity):
 
 ```bash
 python3 setup.py install --target /path/to/deepiri-platform
@@ -43,8 +61,9 @@ python3 setup.py install --target /path/to/deepiri-platform
 
 | Command | Purpose |
 |---------|---------|
-| `install` | Default — write templates (see flags below) |
-| `list-tools` | Print PATH-based detection hints (`claude`, `gemini`, `opencode`) |
+| `install` | Write **all** tool templates (default `--tools all`) + user-level agents unless `--no-global` |
+| `bootstrap` | Same as `install` — onboarding-friendly name |
+| `list-tools` | Print PATH hints (`claude`, `gemini`, `opencode`); use with `--tools auto` if you want conditional OpenCode |
 
 ```bash
 python3 setup.py list-tools
@@ -57,8 +76,8 @@ python3 -m cli list-tools
 |------|---------|
 | `--target PATH` | Project root to install into |
 | `--no-global` | **Project only** — skip `~/.cursor/agents/deepiri-axiom.md` and `~/.gemini/deepiri-axiom.md` |
-| `--tools auto` | Default: cursor, claude, copilot, gemini, and opencode if `opencode` is on `PATH` |
-| `--tools all` | All five tools |
+| `--tools` | **Default: `all`** — every integration. `auto` = same but OpenCode only if `opencode` is on `PATH` |
+| `--tools all` | All five tools (same as default) |
 | `--tools cursor,copilot` | Subset only |
 | `--dry-run` | Show paths only; no writes |
 | `--force` | Overwrite without `.bak` |
@@ -72,11 +91,25 @@ Auto-detect target: prefers `../deepiri-platform` next to this repo, then walks 
 
 | Tool | Files |
 |------|--------|
-| **Cursor** | `.cursor/agents/deepiri-axiom.md`, `.cursor/rules/deepiri-platform.md` |
-| **Claude Code** | `CLAUDE.md` |
-| **Copilot** | `.github/copilot-instructions.md` (short; review limit friendly) |
-| **Gemini** | `GEMINI.md` |
-| **OpenCode** | `.opencode/instructions.md`; merges `instructions` into `opencode.json` if present |
+| **Cursor** | `.cursor/agents/deepiri-axiom.md`, `.cursor/rules/deepiri-axiom.mdc`; `.cursor/mcp.json` (additive merge); **`AGENTS.md`** + **`.cursorignore`** only if missing |
+| **Claude Code** | `CLAUDE.md`, `CLAUDE.local.md`; `.claude/agents/`, `skills/`, `rules/`, `commands/`; `.claude/settings.json` & `settings.local.json` (Claude union-merge for `permissions.allow`) |
+| **Copilot** | `.github/copilot-instructions.md`; `.github/instructions/deepiri-axiom.instructions.md` (path-scoped `applyTo` in frontmatter) |
+| **Gemini** | `GEMINI.md`; `.gemini/settings.json` (additive merge); **`.geminiignore`** only if missing |
+| **OpenCode** | `.opencode/instructions.md`, `agents/deepiri-axiom.md`, `commands/axiom.md`; root **`opencode.json`** (additive merge; `$schema` + `instructions` array) |
+
+Add **`CLAUDE.local.md`** to `.gitignore` if it contains machine-only secrets. Shared instructions live in **`CLAUDE.md`**.
+
+### Layout reference (official docs)
+
+| Tool | Docs / layout |
+|------|----------------|
+| **Cursor** | [Rules](https://cursor.com/docs/context/rules), [MCP](https://cursor.com/docs/context/mcp) — `.cursor/agents`, `.cursor/rules`, `.cursor/mcp.json`, optional root `AGENTS.md`, `.cursorignore` |
+| **Claude Code** | Project `.claude/` tree and `CLAUDE.md` (see Anthropic / Claude Code docs) |
+| **Copilot** | [Repository custom instructions](https://docs.github.com/en/copilot/how-tos/custom-instructions/adding-repository-custom-instructions-for-github-copilot) — `.github/copilot-instructions.md` (repo-wide), `.github/instructions/*.instructions.md` (`applyTo` globs) |
+| **Gemini CLI** | [GEMINI.md](https://google-gemini.github.io/gemini-cli/docs/cli/gemini-md.html), `settings.json` — hierarchy `~/.gemini/GEMINI.md` + project `GEMINI.md`; `.gemini/settings.json`; `.geminiignore` |
+| **OpenCode** | [Config](https://opencode.ai/docs/config/), [Agents](https://opencode.ai/docs/agents), [Commands](https://opencode.ai/docs/commands) — root `opencode.json`, `.opencode/agents/`, `commands/`, `instructions.md` |
+
+Older Cursor installs may still have `.cursor/rules/deepiri-platform.md` — remove it after adopting **`deepiri-axiom.mdc`** to avoid duplicate rules.
 
 ### User-level (default; omit with `--no-global`)
 
@@ -91,7 +124,12 @@ Auto-detect target: prefers `../deepiri-platform` next to this repo, then walks 
 - `prompts/deepiri-context.md` — Deepiri platform architecture and conventions.
 - `prompts/axiom-condensed.md` — short AXIOM behavior for CLAUDE/GEMINI templates.
 - `prompts/copilot-brief.md` — concise Copilot instructions.
-- `templates/*.j2` — `{{PLACEHOLDER}}` templates filled by `cli/installer.py`.
+- `templates/**` — `{{PLACEHOLDER}}` templates (and static snippets) filled by `cli/installer.py`.
+- `templates/claude/*` — Claude Code agent, skill, rules, command, and JSON settings templates.
+- `templates/cursor/*` — Cursor agent, rule (`.mdc`), `mcp.json`, `AGENTS.md`, `.cursorignore` templates.
+- `templates/gemini/*` — `GEMINI.md`, `settings.json`, `geminiignore` templates.
+- `templates/opencode/*` — `instructions.md`, `opencode.json`, `agents/`, `commands/` templates.
+- `templates/copilot/*` — repo-wide and path-specific Copilot instruction templates.
 
 Regenerate after editing prompts or templates by re-running `python3 setup.py install` (or `python3 -m cli install`).
 
