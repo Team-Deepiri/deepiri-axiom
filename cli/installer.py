@@ -11,6 +11,8 @@ import sys
 import threading
 from pathlib import Path
 
+from cli.repo_cartography import build_target_cartography
+
 REPO_ROOT = Path(__file__).resolve().parent.parent
 PROMPTS = REPO_ROOT / "prompts"
 TEMPLATES = REPO_ROOT / "templates"
@@ -422,12 +424,16 @@ def run_install(args: argparse.Namespace) -> int:
     deepiri_ctx = read_text(PROMPTS / "deepiri-context.md")
     axiom_condensed = read_text(PROMPTS / "axiom-condensed.md")
     copilot_brief = read_text(PROMPTS / "copilot-brief.md")
+    axiom_branch_tools = read_text(PROMPTS / "axiom-branch-tools.md")
+    target_cartography = build_target_cartography(target)
 
     mapping = {
         "DEEPIRI_CONTEXT": deepiri_ctx,
         "AXIOM_CORE": axiom_core,
         "AXIOM_CONDENSED": axiom_condensed,
         "COPILOT_BRIEF": copilot_brief,
+        "AXIOM_BRANCH_TOOLS": axiom_branch_tools,
+        "TARGET_REPO_CARTOGRAPHY": target_cartography,
     }
 
     use_spinner = not args.no_spinner
