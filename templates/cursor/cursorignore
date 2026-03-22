@@ -1,0 +1,12 @@
+# Suggested ignores for Cursor indexing (gitignore-style). Extend as needed.
+# Installed by deepiri-axiom — safe to edit.
+
+node_modules/
+dist/
+build/
+.next/
+.turbo/
+coverage/
+*.min.js
+.env
+.env.*

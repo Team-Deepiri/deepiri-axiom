@@ -1,0 +1,7 @@
+# Patterns excluded from Gemini CLI subdirectory context scans (gitignore-style).
+# Installed by deepiri-axiom — safe to edit.
+
+node_modules/
+dist/
+build/
+.git/
