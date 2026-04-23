@@ -1,0 +1,20 @@
+name: deepiri-axiom-codeql
+
+# Limit analysis to source and template directories used by this repo.
+paths:
+  - cli
+  - templates
+
+# Exclude generated/build/runtime artifact paths.
+paths-ignore:
+  - '**/__pycache__/**'
+  - '**/*.pyc'
+  - '**/*.pyo'
+  - '**/.pytest_cache/**'
+  - '**/.mypy_cache/**'
+  - '**/node_modules/**'
+  - '**/dist/**'
+  - '**/build/**'
+  - '**/coverage/**'
+  - '**/logs/**'
+  - '**/*.min.js'
