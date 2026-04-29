@@ -6,6 +6,7 @@ Delegates to :mod:`cli.main`. Run from repo root::
 
     python3 setup.py              # full install (all tools), default target
     python3 setup.py install
+    python3 setup.py subagent     # Cursor subagent + project .cursor/ only
     python3 setup.py bootstrap    # same as install
     python3 setup.py list-tools
     python3 -m cli
