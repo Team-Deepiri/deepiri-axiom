@@ -1,10 +1,25 @@
 # Deepiri Axiom
 
-Install **Deepiri **Axiom**** — the **canonical Deepiri systems architect** — into your AI tools: **Cursor**, **Claude Code**, **GitHub Copilot**, **Gemini CLI**, and **OpenCode**. Prompts are **doc-grounded** (`docs/DOCUMENTATION_INDEX.md`, `docs/architecture/*`) and include the full **Team-Deepiri org repo map**.
+Install **Deepiri Axiom** — the **canonical Team-Deepiri systems architect** — into your AI coding tools: **Cursor**, **Claude Code**, **GitHub Copilot**, **Gemini CLI**, and **OpenCode**. Prompts are **doc-grounded** (`docs/DOCUMENTATION_INDEX.md`, `docs/architecture/*` where they exist) and include the **Team-Deepiri org map** in `deepiri-context.md`.
 
 - **No pip dependencies** — only Python 3.10+ stdlib.
 - **Spinner** during install (disable with `--no-spinner` or in non-TTY).
 - **Backups** — existing files are saved as `*.bak` before overwrite (skip with `--force`).
+
+## Cursor subagent (fastest path)
+
+**Goal:** get **`.cursor/agents/deepiri-axiom.md`** (and project rules) so you can pick **deepiri-axiom** in Cursor’s custom subagent list—no other tools, no `~/.cursor` copy unless you ask.
+
+```bash
+cd /path/to/your/repo
+python3 /path/to/deepiri-axiom/setup.py subagent
+```
+
+- **From any subfolder of the repo** (with git), use: `bash /path/to/deepiri-axiom/scripts/install-subagent-here.sh` — it resolves the git root and runs `subagent` for you.
+- **Optional user-level** agent (same prompt, but **no** embedded repo tree in that file): `python3 .../setup.py subagent --with-global`
+- **Same as:** `python3 .../setup.py install --preset subagent`
+
+Then in **Cursor:** open the subagent / custom agent picker and choose **deepiri-axiom**; restart Cursor if it does not appear.
 
 ## Team setup (one command for any dev)
 
@@ -31,7 +46,8 @@ python3 setup.py bootstrap --target /path/to/your/repo
 | Path | Role |
 |------|------|
 | `setup.py` | Thin entry: adds repo root to `sys.path`, calls `cli.main.main()` |
-| `cli/main.py` | `argparse` subcommands (`install`, `list-tools`), legacy argv normalization |
+| `cli/main.py` | `argparse` subcommands (`install`, `bootstrap`, `subagent`, `list-tools`), legacy argv normalization |
+| `scripts/install-subagent-here.sh` | Resolves git root and runs `subagent` (convenience) |
 | `cli/installer.py` | Template rendering, writes, spinner, global install |
 | `cli/__main__.py` | Enables `python3 -m cli` |
 
@@ -39,7 +55,7 @@ Same behavior as common internal CLIs: **commands** are functions (`cmd_install`
 
 ## Quick start
 
-From the `deepiri-axiom` repo, **`deepiri-platform`** next to it is the default `--target` if that folder exists; otherwise the CLI walks up from the current directory to find a matching project root.
+**Default `--target`:** the **git root of your current working directory** (or `cwd` if not in a git repo). The only exception is when you run the CLI **from inside the `deepiri-axiom` source tree**—then the default is a sibling `../deepiri-platform` if that directory exists (dogfooding the installer).
 
 ```bash
 python3 setup.py
@@ -63,6 +79,7 @@ python3 setup.py install --target /path/to/deepiri-platform
 |---------|---------|
 | `install` | Write **all** tool templates (default `--tools all`) + user-level agents unless `--no-global` |
 | `bootstrap` | Same as `install` — onboarding-friendly name |
+| `subagent` | **Cursor only** (project `.cursor/`), implies `--no-global` unless you pass `--with-global` |
 | `list-tools` | Print PATH hints (`claude`, `gemini`, `opencode`); use with `--tools auto` if you want conditional OpenCode |
 
 ```bash
@@ -82,8 +99,9 @@ python3 -m cli list-tools
 | `--dry-run` | Show paths only; no writes |
 | `--force` | Overwrite without `.bak` |
 | `--no-spinner` | No animated progress (CI / logs) |
+| `--preset subagent` | Same as the `subagent` subcommand (Cursor only, project-only) |
 
-Auto-detect target: prefers `../deepiri-platform` next to this repo, then walks up from cwd for `deepiri-platform/` or a tree with `docs/DOCUMENTATION_INDEX.md` + `package.json`.
+Auto-detect `--target`: **git root of `cwd`**, except when the shell is under the `deepiri-axiom` checkout (then default is `../deepiri-platform` if present).
 
 ## What gets written
 
@@ -115,13 +133,13 @@ Older Cursor installs may still have `.cursor/rules/deepiri-platform.md` — rem
 
 | Tool | Location |
 |------|----------|
-| **Cursor** | `~/.cursor/agents/deepiri-axiom.md` — same agent as the project; **available in every folder** after restarting Cursor if needed |
-| **Gemini** | `~/.gemini/deepiri-axiom.md` — full context; if `~/.gemini/GEMINI.md` does not exist, a stub is created that points at this file |
+| **Cursor** | `~/.cursor/agents/deepiri-axiom.md` — same instructions as the project agent, but **without** a frozen repo tree (so it is not wrong when you open other folders) |
+| **Gemini** | `~/.gemini/deepiri-axiom.md` — same idea; if `~/.gemini/GEMINI.md` does not exist, a stub is created that points at this file |
 
 ## Contents
 
 - `prompts/axiom-core.md` — full AXIOM master prompt (no IDE frontmatter).
-- `prompts/deepiri-context.md` — Deepiri platform architecture and conventions.
+- `prompts/deepiri-context.md` — Deepiri org layout: platform + major product areas + a **Team-Deepiri** repo table (regenerate: `gh api orgs/Team-Deepiri/repos --paginate`). Always doc-grounded per target repo.
 - `prompts/axiom-condensed.md` — short AXIOM behavior for CLAUDE/GEMINI templates.
 - `prompts/copilot-brief.md` — concise Copilot instructions.
 - `templates/**` — `{{PLACEHOLDER}}` templates (and static snippets) filled by `cli/installer.py`.

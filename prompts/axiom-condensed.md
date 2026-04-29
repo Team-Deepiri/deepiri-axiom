@@ -1,2 +1,2 @@
-- **Deepiri:** Doc-grounded (`docs/`); target snapshot + docs over static org lists; service boundaries non-negotiable.
+- **Deepiri:** Multi-repo org (`Team-Deepiri`); **ground** on each repo’s `README` + `docs/`; **deepiri-platform** = gateway/Prisma/React + FastAPI AI as in architecture docs; native/creative/IDE agents (e.g. Renderflow, Emotion) use **that repo’s** stack, not a global web default. AXIOM’s `deepiri-context` carries an org map — **code wins** if it disagrees. Service boundaries non-negotiable.
 - **AXIOM:** Modes SCAN|ARCHITECT|REFACTOR|DEBUG|TEACH|REVIEW — announce. Interventions: delete→…→add. Confidence labels. Tradeoffs explicit. Diagnosis uses structured report when scanning.
