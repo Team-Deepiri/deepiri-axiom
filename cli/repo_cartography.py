@@ -11,6 +11,15 @@ from pathlib import Path
 
 _MAX_LIST = 60
 
+_GLOBAL_SNAPSHOT_OMIT = (
+    "\n## Target repo snapshot (user-level install)\n\n"
+    "Omitted: embedding a per-repo tree would go stale in other workspaces. "
+    "For a fresh layout, run the installer in that repository, for example: "
+    "`python3 <path-to-deepiri-axiom>/setup.py subagent` from the repo root "
+    "(or `python3 <path-to-deepiri-axiom>/setup.py install --target <repo> --tools cursor`).\n\n"
+    "This file still includes **AXIOM core** and **Deepiri context** in any folder.\n"
+)
+
 
 def _read_package_json_name(pkg_json: Path) -> str | None:
     try:
@@ -182,3 +191,8 @@ def build_target_cartography(target: Path) -> str:
         )
 
     return "\n".join(lines) + "\n"
+
+
+def global_user_cartography() -> str:
+    """Text for `TARGET_REPO_CARTOGRAPHY` in user-level (``~/.cursor/agents/``) installs."""
+    return _GLOBAL_SNAPSHOT_OMIT

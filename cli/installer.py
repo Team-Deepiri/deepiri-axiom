@@ -11,7 +11,7 @@ import sys
 import threading
 from pathlib import Path
 
-from cli.repo_cartography import build_target_cartography
+from cli.repo_cartography import build_target_cartography, global_user_cartography
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 PROMPTS = REPO_ROOT / "prompts"
@@ -76,19 +76,33 @@ def render_template(template_body: str, mapping: dict[str, str]) -> str:
     return out
 
 
-def find_default_target() -> Path:
-    """Prefer sibling ``deepiri-platform`` when running from the deepiri-axiom repo."""
-    sibling = REPO_ROOT.parent / "deepiri-platform"
-    if sibling.is_dir():
-        return sibling
-    cwd = Path.cwd()
-    for base in [cwd, *cwd.parents]:
-        candidate = base / "deepiri-platform"
-        if candidate.is_dir():
-            return candidate
-        if (base / "docs" / "DOCUMENTATION_INDEX.md").is_file() and (base / "package.json").is_file():
-            return base
+def _cwd_git_root(cwd: Path) -> Path:
+    """Innermost ancestor of ``cwd`` that contains a ``.git`` directory, else ``cwd``."""
+    cwd = cwd.resolve()
+    if (cwd / ".git").exists():
+        return cwd
+    for p in cwd.parents:
+        if (p / ".git").is_dir():
+            return p
     return cwd
+
+
+def find_default_target() -> Path:
+    """Project to install into: **the repo you are in**, not a random sibling monorepo.
+
+    Historically this preferred ``../deepiri-platform`` — that mis-targeted every other
+    clone (e.g. ``deepiri-renderflow-studio``) whenever the platform repo sat next to
+    this installer. We only special-case when the **current working directory is inside
+    the deepiri-axiom source tree** (dogfooding the installer); then we default to a
+    sibling ``deepiri-platform`` if it exists.
+    """
+    axiom = REPO_ROOT.resolve()
+    cwd = Path.cwd().resolve()
+    if cwd == axiom or axiom in cwd.parents:
+        sib = axiom.parent / "deepiri-platform"
+        if sib.is_dir():
+            return sib
+    return _cwd_git_root(cwd)
 
 
 def tool_detection() -> dict[str, bool]:
@@ -356,14 +370,17 @@ def run_global_install(
     use_spinner: bool,
 ) -> None:
     """Register configs under ``~/.cursor`` and ``~/.gemini`` when not ``--no-global``."""
+    # User-level files must not embed a frozen tree snapshot (stale across workspaces).
+    user_mapping = {**mapping, "TARGET_REPO_CARTOGRAPHY": global_user_cartography()}
+
     global_ops: list[tuple[str, Path, str]] = []
 
     if "cursor" in tools:
-        body = render_template(read_text(TEMPLATES / "cursor" / "agent.md.j2"), mapping)
+        body = render_template(read_text(TEMPLATES / "cursor" / "agent.md.j2"), user_mapping)
         global_ops.append(("User Cursor agent (all workspaces)", global_cursor_agent_path(), body))
 
     if "gemini" in tools:
-        body = render_template(read_text(TEMPLATES / "gemini" / "GEMINI.md.j2"), mapping)
+        body = render_template(read_text(TEMPLATES / "gemini" / "GEMINI.md.j2"), user_mapping)
         global_ops.append(("User Gemini context", global_gemini_context_path(), body))
 
     if not global_ops:
@@ -711,6 +728,17 @@ def run_install(args: argparse.Namespace) -> int:
 
     if getattr(args, "global_install", True):
         run_global_install(args, mapping, tools, use_spinner)
+
+    is_subagent_flow = getattr(args, "command", None) == "subagent" or (
+        getattr(args, "command", None) in ("install", "bootstrap")
+        and getattr(args, "preset", "full") == "subagent"
+    )
+    if is_subagent_flow and "cursor" in tools:
+        print()
+        print("Cursor: open the **subagent / custom agent** menu and run **deepiri-axiom** (Deepiri Genius).")
+        print("  If it does not appear, restart Cursor; project file is at .cursor/agents/deepiri-axiom.md")
+        if getattr(args, "no_global", True):
+            print("  (Project-only install — no user-level copy under ~/.cursor)")
 
     print("Done.")
     return 0
