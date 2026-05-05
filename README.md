@@ -1,10 +1,32 @@
 # Deepiri Axiom
 
-Install **Deepiri **Axiom**** — the **canonical Deepiri systems architect** — into your AI tools: **Cursor**, **Claude Code**, **GitHub Copilot**, **Gemini CLI**, and **OpenCode**. Prompts are **doc-grounded** (`docs/DOCUMENTATION_INDEX.md`, `docs/architecture/*`) and include the full **Team-Deepiri org repo map**.
+Install **Deepiri Axiom** — the **canonical Deepiri systems architect** — into your AI tools: **Cursor**, **Claude Code**, **GitHub Copilot**, **Gemini CLI**, and **OpenCode**. Prompts are **doc-grounded** (`docs/DOCUMENTATION_INDEX.md`, `docs/architecture/*`) and carry the **full Team-Deepiri org repo map** (~35 public repos) so the installed agent can act as a **1-on-1 Deepiri expert**, with or without a local clone.
 
 - **No pip dependencies** — only Python 3.10+ stdlib.
 - **Spinner** during install (disable with `--no-spinner` or in non-TTY).
 - **Backups** — existing files are saved as `*.bak` before overwrite (skip with `--force`).
+- **Transparent** — the full prompt lives in [`prompts/`](prompts); there are no hidden directives.
+
+## 1-on-1 Deepiri expert (no target repo needed)
+
+If you're a new contributor and haven't cloned `deepiri-platform` yet, you can still install the agent into your **user profile** and get expert Deepiri help in any folder:
+
+```bash
+git clone https://github.com/Team-Deepiri/deepiri-axiom.git
+cd deepiri-axiom
+python3 setup.py install --target . --no-global   # skip if you only want user-level
+# or, user-level only (recommended for new devs):
+python3 setup.py install
+```
+
+The user-level install writes:
+
+- `~/.cursor/agents/deepiri-axiom.md` — a **deepiri-axiom** agent available in every Cursor workspace.
+- `~/.gemini/deepiri-axiom.md` — same context for Gemini CLI (with a stub `~/.gemini/GEMINI.md` pointer if one does not exist).
+
+Both carry the embedded org repo map from [`prompts/deepiri-context.md`](prompts/deepiri-context.md), so you can ask questions like *"which repo owns Persola fine-tuning?"* or *"where does an external Notion webhook land?"* and get a grounded answer before you clone anything.
+
+When you do clone a specific Deepiri repo, re-run `python3 setup.py install --target /path/to/that/repo` to also write **project-level** files and generate the live **target repo snapshot** (workspaces, packages, submodules) alongside the org map.
 
 ## Team setup (one command for any dev)
 
@@ -121,9 +143,10 @@ Older Cursor installs may still have `.cursor/rules/deepiri-platform.md` — rem
 ## Contents
 
 - `prompts/axiom-core.md` — full AXIOM master prompt (no IDE frontmatter).
-- `prompts/deepiri-context.md` — Deepiri platform architecture and conventions.
-- `prompts/axiom-condensed.md` — short AXIOM behavior for CLAUDE/GEMINI templates.
-- `prompts/copilot-brief.md` — concise Copilot instructions.
+- `prompts/deepiri-context.md` — **Deepiri Genius identity + full Team-Deepiri org repo map** (35 public repos, categorized), service boundaries, and 1-on-1 expert-mode guidance.
+- `prompts/axiom-condensed.md` — short AXIOM behavior for CLAUDE/GEMINI templates (carries a one-line repo pointer).
+- `prompts/copilot-brief.md` — concise Copilot instructions with a compact repo map for short-context tools.
+- `prompts/axiom-branch-tools.md` — git / branch orientation policy for cross-service work.
 - `templates/**` — `{{PLACEHOLDER}}` templates (and static snippets) filled by `cli/installer.py`.
 - `templates/claude/*` — Claude Code agent, skill, rules, command, and JSON settings templates.
 - `templates/cursor/*` — Cursor agent, rule (`.mdc`), `mcp.json`, `AGENTS.md`, `.cursorignore` templates.
