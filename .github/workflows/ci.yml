@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    branches:
+      - main
+      - dev
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate CLI
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Compile Python sources
+        run: python -m compileall cli setup.py
+
+      - name: Check shell scripts
+        run: bash -n scripts/install-subagent-here.sh
+
+      - name: Smoke test CLI commands
+        run: |
+          python setup.py list-tools
+          python -m cli list-tools
+
+      - name: Dry run installer
+        run: |
+          mkdir -p "$RUNNER_TEMP/axiom-target"
+          python setup.py install \
+            --target "$RUNNER_TEMP/axiom-target" \
+            --no-global \
+            --no-spinner \
+            --dry-run
+
+      - name: Install into temporary project
+        run: |
+          target="$RUNNER_TEMP/axiom-target"
+          rm -rf "$target"
+          mkdir -p "$target"
+
+          python setup.py install \
+            --target "$target" \
+            --no-global \
+            --no-spinner \
+            --force
+
+          test -f "$target/.cursor/agents/deepiri-axiom.md"
+          test -f "$target/.cursor/rules/deepiri-axiom.mdc"
+          test -f "$target/CLAUDE.md"
+          test -f "$target/.github/copilot-instructions.md"
+          test -f "$target/GEMINI.md"
+          test -f "$target/.opencode/instructions.md"
