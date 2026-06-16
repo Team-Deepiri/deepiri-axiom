@@ -102,7 +102,9 @@ def build_target_cartography(target: Path) -> str:
         lines.append("- **Docs index:** `docs/DOCUMENTATION_INDEX.md` (use as navigation hub)")
     bp = root / "BRANCH_PROTECTION.md"
     if bp.is_file():
-        lines.append("- **Branch policy:** `BRANCH_PROTECTION.md` (read before merge/release advice)")
+        lines.append(
+            "- **Branch policy:** `BRANCH_PROTECTION.md` (read before merge/release advice)"
+        )
 
     for hint in (
         "team_submodule_commands",
@@ -172,15 +174,14 @@ def build_target_cartography(target: Path) -> str:
         lines.append("| submodule | path |")
         lines.append("|-----------|------|")
         for name, path in subs[:_MAX_LIST]:
-            lines.append(
-                f"| `{_markdown_escape_cell(name)}` | `{_markdown_escape_cell(path)}` |"
-            )
+            lines.append(f"| `{_markdown_escape_cell(name)}` | `{_markdown_escape_cell(path)}` |")
         if len(subs) > _MAX_LIST:
             lines.append(f"| … | *{len(subs) - _MAX_LIST} more* |")
         lines.append("")
         lines.append(
             "*If the task touches shared code or release flow, align with submodule pointers "
-            "(`git submodule status`) and team scripts under `team_submodule_commands/` when present.*"
+            "(`git submodule status`) and team scripts under "
+            "`team_submodule_commands/` when present.*"
         )
 
     if not patterns and not subs:

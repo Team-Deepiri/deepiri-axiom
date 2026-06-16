@@ -1,0 +1,21 @@
+[project]
+name = "deepiri-axiom"
+version = "0.0.0"
+description = "Install Deepiri Genius / AXIOM prompts for Cursor, Claude Code, Copilot, Gemini, OpenCode."
+readme = "README.md"
+requires-python = ">=3.10"
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+src = ["cli", "scripts"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.ruff.lint.per-file-ignores]
+"setup.py" = ["E402"]
+"scripts/validate_templates.py" = ["E402"]
+
+[tool.ruff.format]
+quote-style = "double"

@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+
+permissions:
+  contents: read
+
+jobs:
+  lint-and-validate:
+    name: Lint & Validate
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dev tools
+        run: pip install ruff
+
+      - name: Ruff lint
+        run: ruff check cli scripts setup.py
+
+      - name: Ruff format check
+        run: ruff format --check cli scripts setup.py
+
+      - name: Compile Python sources
+        run: python -m compileall -q cli setup.py scripts
+
+      - name: Installer dry-run (full)
+        run: python setup.py install --target . --no-global --no-spinner --dry-run
+
+      - name: Installer dry-run (subagent)
+        run: python setup.py subagent --target . --no-spinner --dry-run
+
+      - name: CLI list-tools
+        run: python -m cli list-tools

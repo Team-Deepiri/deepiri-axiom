@@ -183,7 +183,8 @@ def global_gemini_context_path() -> Path:
 
 
 def merge_claude_settings(existing: dict, default: dict) -> dict:
-    """Deep-merge Claude Code JSON: union ``permissions.allow``; fill missing keys from ``default``."""
+    """Deep-merge Claude Code JSON: union ``permissions.allow``;
+    fill missing keys from ``default``."""
     out = copy.deepcopy(existing) if isinstance(existing, dict) else {}
     if not isinstance(default, dict):
         return out
@@ -256,7 +257,8 @@ def write_json_merge_fill_missing(
 
 
 def merge_cursor_mcp_json(existing: dict, default: dict) -> dict:
-    """Merge project ``.cursor/mcp.json``: add missing ``mcpServers`` entries only; keep existing servers."""
+    """Merge project ``.cursor/mcp.json``: add missing ``mcpServers`` entries only;
+    keep existing servers."""
     out = copy.deepcopy(existing) if isinstance(existing, dict) else {}
     if not isinstance(default, dict):
         return out
@@ -469,7 +471,10 @@ def run_install(args: argparse.Namespace) -> int:
             (
                 "Cursor rule (.mdc)",
                 target / ".cursor" / "rules" / "deepiri-axiom.mdc",
-                render_template(read_text(TEMPLATES / "cursor" / "rules-deepiri-axiom.md.j2"), mapping),
+                render_template(
+                    read_text(TEMPLATES / "cursor" / "rules-deepiri-axiom.md.j2"),
+                    mapping,
+                ),
             )
         )
 
@@ -522,7 +527,10 @@ def run_install(args: argparse.Namespace) -> int:
             (
                 "Copilot instructions (repo-wide)",
                 target / ".github" / "copilot-instructions.md",
-                render_template(read_text(TEMPLATES / "copilot" / "copilot-instructions.md.j2"), mapping),
+                render_template(
+                    read_text(TEMPLATES / "copilot" / "copilot-instructions.md.j2"),
+                    mapping,
+                ),
             )
         )
         operations.append(
@@ -530,7 +538,9 @@ def run_install(args: argparse.Namespace) -> int:
                 "Copilot path-specific instructions",
                 target / ".github" / "instructions" / "deepiri-axiom.instructions.md",
                 render_template(
-                    read_text(TEMPLATES / "copilot" / "instructions-deepiri-axiom.instructions.md.j2"),
+                    read_text(
+                        TEMPLATES / "copilot" / "instructions-deepiri-axiom.instructions.md.j2"
+                    ),
                     mapping,
                 ),
             )
@@ -557,7 +567,10 @@ def run_install(args: argparse.Namespace) -> int:
             (
                 "OpenCode agent",
                 target / ".opencode" / "agents" / "deepiri-axiom.md",
-                render_template(read_text(TEMPLATES / "opencode" / "agents" / "deepiri-axiom.md.j2"), mapping),
+                render_template(
+                    read_text(TEMPLATES / "opencode" / "agents" / "deepiri-axiom.md.j2"),
+                    mapping,
+                ),
             )
         )
         operations.append(
@@ -735,8 +748,14 @@ def run_install(args: argparse.Namespace) -> int:
     )
     if is_subagent_flow and "cursor" in tools:
         print()
-        print("Cursor: open the **subagent / custom agent** menu and run **deepiri-axiom** (Deepiri Genius).")
-        print("  If it does not appear, restart Cursor; project file is at .cursor/agents/deepiri-axiom.md")
+        print(
+            "Cursor: open the **subagent / custom agent** menu and run "
+            "**deepiri-axiom** (Deepiri Genius)."
+        )
+        print(
+            "  If it does not appear, restart Cursor; "
+            "project file is at .cursor/agents/deepiri-axiom.md"
+        )
         if getattr(args, "no_global", True):
             print("  (Project-only install — no user-level copy under ~/.cursor)")
 

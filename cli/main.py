@@ -56,7 +56,10 @@ def _add_install_arguments(p: argparse.ArgumentParser) -> None:
         "--target",
         type=Path,
         default=None,
-        help="Project root to install into (default: git root of cwd, or ../deepiri-platform if cwd is in deepiri-axiom source)",
+        help=(
+            "Project root to install into (default: git root of cwd, or "
+            "../deepiri-platform if cwd is in deepiri-axiom source)"
+        ),
     )
     p.add_argument(
         "--tools",
@@ -95,12 +98,18 @@ def _add_install_subagent_only_arguments(p: argparse.ArgumentParser) -> None:
         "--target",
         type=Path,
         default=None,
-        help="Project root (default: git root of cwd, or ../deepiri-platform if cwd is inside deepiri-axiom)",
+        help=(
+            "Project root (default: git root of cwd, or ../deepiri-platform "
+            "if cwd is inside deepiri-axiom)"
+        ),
     )
     p.add_argument(
         "--with-global",
         action="store_true",
-        help="Also write ~/.cursor/agents/deepiri-axiom.md (no embedded repo tree; safe across workspaces).",
+        help=(
+            "Also write ~/.cursor/agents/deepiri-axiom.md "
+            "(no embedded repo tree; safe across workspaces)."
+        ),
     )
     p.add_argument("--dry-run", action="store_true", help="Print actions without writing files")
     p.add_argument("--force", action="store_true", help="Overwrite without .bak backup")
@@ -115,7 +124,8 @@ def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="deepiri-axiom",
         description=(
-            "Install Deepiri Genius / AXIOM prompts for Cursor, Claude Code, Copilot, Gemini, OpenCode."
+            "Install Deepiri Genius / AXIOM prompts for Cursor, Claude Code, "
+            "Copilot, Gemini, OpenCode."
         ),
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -136,7 +146,10 @@ def _build_parser() -> argparse.ArgumentParser:
 
     subagent_p = subparsers.add_parser(
         "subagent",
-        help="Install the Cursor subagent (and .cursor/ rules) only—fast, no Claude/Copilot/Gemini files.",
+        help=(
+            "Install the Cursor subagent (and .cursor/ rules) only—fast, "
+            "no Claude/Copilot/Gemini files."
+        ),
     )
     _add_install_subagent_only_arguments(subagent_p)
     subagent_p.set_defaults(func=cmd_subagent)
