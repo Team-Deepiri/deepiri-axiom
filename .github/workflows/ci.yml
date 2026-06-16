@@ -4,7 +4,7 @@ on:
   push:
     branches: [main, dev]
   pull_request:
-    branches: [main, dev]
+    branches: ["**"]
 
 permissions:
   contents: read
@@ -31,19 +31,19 @@ jobs:
         run: pip install ruff
 
       - name: Ruff lint
-        run: ruff check cli scripts setup.py
+        run: ruff check cli scripts install.py
 
       - name: Ruff format check
-        run: ruff format --check cli scripts setup.py
+        run: ruff format --check cli scripts install.py
 
       - name: Compile Python sources
-        run: python -m compileall -q cli setup.py scripts
+        run: python -m compileall -q cli install.py scripts
 
       - name: Installer dry-run (full)
-        run: python setup.py install --target . --no-global --no-spinner --dry-run
+        run: python install.py install --target . --no-global --no-spinner --dry-run
 
       - name: Installer dry-run (subagent)
-        run: python setup.py subagent --target . --no-spinner --dry-run
+        run: python install.py subagent --target . --no-spinner --dry-run
 
       - name: CLI list-tools
         run: python -m cli list-tools

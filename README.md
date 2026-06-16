@@ -14,9 +14,9 @@ If you're a new contributor and haven't cloned `deepiri-platform` yet, you can s
 ```bash
 git clone https://github.com/Team-Deepiri/deepiri-axiom.git
 cd deepiri-axiom
-python3 setup.py install --target . --no-global   # skip if you only want user-level
+python3 install.py install --target . --no-global   # skip if you only want user-level
 # or, user-level only (recommended for new devs):
-python3 setup.py install
+python3 install.py install
 ```
 
 The user-level install writes:
@@ -26,7 +26,7 @@ The user-level install writes:
 
 Both carry the embedded org repo map from [`prompts/deepiri-context.md`](prompts/deepiri-context.md), so you can ask questions like *"which repo owns Persola fine-tuning?"* or *"where does an external Notion webhook land?"* and get a grounded answer before you clone anything.
 
-When you do clone a specific Deepiri repo, re-run `python3 setup.py install --target /path/to/that/repo` to also write **project-level** files and generate the live **target repo snapshot** (workspaces, packages, submodules) alongside the org map.
+When you do clone a specific Deepiri repo, re-run `python3 install.py install --target /path/to/that/repo` to also write **project-level** files and generate the live **target repo snapshot** (workspaces, packages, submodules) alongside the org map.
 
 ## Team setup (one command for any dev)
 
@@ -34,7 +34,7 @@ You do **not** need to pick tools or read the rest of this doc to get started.
 
 ```bash
 cd path/to/deepiri-axiom
-python3 setup.py install --target /path/to/your/repo
+python3 install.py install --target /path/to/your/repo
 ```
 
 That installs **every** integration (Cursor, Claude Code, Copilot, Gemini, OpenCode) into the target repo and, by default, your **user profile** (`~/.cursor/agents/deepiri-axiom.md`, `~/.gemini/deepiri-axiom.md`) so the same agents work in any folder.
@@ -42,17 +42,17 @@ That installs **every** integration (Cursor, Claude Code, Copilot, Gemini, OpenC
 Same thing, explicit name:
 
 ```bash
-python3 setup.py bootstrap --target /path/to/your/repo
+python3 install.py bootstrap --target /path/to/your/repo
 ```
 
-**CI / no dotfiles:** `python3 setup.py install --target . --no-global`  
+**CI / no dotfiles:** `python3 install.py install --target . --no-global`  
 **Lighter install** (skip OpenCode files unless `opencode` is on `PATH`): `--tools auto`
 
 ## CLI layout
 
 | Path | Role |
 |------|------|
-| `setup.py` | Thin entry: adds repo root to `sys.path`, calls `cli.main.main()` |
+| `install.py` | Thin entry: adds repo root to `sys.path`, calls `cli.main.main()` |
 | `cli/main.py` | `argparse` subcommands (`install`, `list-tools`), legacy argv normalization |
 | `cli/installer.py` | Template rendering, writes, spinner, global install |
 | `cli/__main__.py` | Enables `python3 -m cli` |
@@ -64,20 +64,20 @@ Same behavior as common internal CLIs: **commands** are functions (`cmd_install`
 From the `deepiri-axiom` repo, **`deepiri-platform`** next to it is the default `--target` if that folder exists; otherwise the CLI walks up from the current directory to find a matching project root.
 
 ```bash
-python3 setup.py
+python3 install.py
 # equivalent:
-python3 setup.py install
-python3 setup.py bootstrap
+python3 install.py install
+python3 install.py bootstrap
 python3 -m cli install
 ```
 
 Explicit target (recommended in docs for clarity):
 
 ```bash
-python3 setup.py install --target /path/to/deepiri-platform
+python3 install.py install --target /path/to/deepiri-platform
 ```
 
-**Legacy:** `python3 setup.py --dry-run` is rewritten to `python3 setup.py install --dry-run` (no subcommand required).
+**Legacy:** `python3 install.py --dry-run` is rewritten to `python3 install.py install --dry-run` (no subcommand required).
 
 ### Subcommands
 
@@ -88,7 +88,7 @@ python3 setup.py install --target /path/to/deepiri-platform
 | `list-tools` | Print PATH hints (`claude`, `gemini`, `opencode`); use with `--tools auto` if you want conditional OpenCode |
 
 ```bash
-python3 setup.py list-tools
+python3 install.py list-tools
 python3 -m cli list-tools
 ```
 
@@ -154,7 +154,7 @@ Older Cursor installs may still have `.cursor/rules/deepiri-platform.md` — rem
 - `templates/opencode/*` — `instructions.md`, `opencode.json`, `agents/`, `commands/` templates.
 - `templates/copilot/*` — repo-wide and path-specific Copilot instruction templates.
 
-Regenerate after editing prompts or templates by re-running `python3 setup.py install` (or `python3 -m cli install`).
+Regenerate after editing prompts or templates by re-running `python3 install.py install` (or `python3 -m cli install`).
 
 ## License
 

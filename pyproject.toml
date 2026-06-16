@@ -14,7 +14,7 @@ src = ["cli", "scripts"]
 select = ["E", "F", "I", "UP", "B", "SIM"]
 
 [tool.ruff.lint.per-file-ignores]
-"setup.py" = ["E402"]
+"install.py" = ["E402"]
 "scripts/validate_templates.py" = ["E402"]
 
 [tool.ruff.format]

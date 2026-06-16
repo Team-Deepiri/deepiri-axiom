@@ -1,6 +1,6 @@
 """Install-time snapshot of a target repo layout (npm workspaces, services, submodules).
 
-Keeps prompts data-driven: generated when ``setup.py install`` runs, not hand-edited tables.
+Keeps prompts data-driven: generated when ``install.py install`` runs, not hand-edited tables.
 """
 
 from __future__ import annotations
@@ -15,8 +15,8 @@ _GLOBAL_SNAPSHOT_OMIT = (
     "\n## Target repo snapshot (user-level install)\n\n"
     "Omitted: embedding a per-repo tree would go stale in other workspaces. "
     "For a fresh layout, run the installer in that repository, for example: "
-    "`python3 <path-to-deepiri-axiom>/setup.py subagent` from the repo root "
-    "(or `python3 <path-to-deepiri-axiom>/setup.py install --target <repo> --tools cursor`).\n\n"
+    "`python3 <path-to-deepiri-axiom>/install.py subagent` from the repo root "
+    "(or `python3 <path-to-deepiri-axiom>/install.py install --target <repo> --tools cursor`).\n\n"
     "This file still includes **AXIOM core** and **Deepiri context** in any folder.\n"
 )
 
@@ -87,7 +87,7 @@ def build_target_cartography(target: Path) -> str:
         "## Target repo snapshot (install-time)",
         "",
         "*Generated when `deepiri-axiom` was installed into this tree. Re-run "
-        "`python3 path/to/deepiri-axiom/setup.py install --target .` to refresh.*",
+        "`python3 path/to/deepiri-axiom/install.py install --target .` to refresh.*",
         "",
     ]
     if not target.is_dir():

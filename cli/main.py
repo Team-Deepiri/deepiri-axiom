@@ -10,7 +10,7 @@ from cli.installer import find_default_target, run_install, tool_detection
 
 
 def _normalize_argv(argv: list[str]) -> list[str]:
-    """Legacy: ``python setup.py --dry-run`` → ``python setup.py install --dry-run``."""
+    """Legacy: ``python install.py --dry-run`` → ``python install.py install --dry-run``."""
     if len(argv) <= 1:
         return argv + ["install"]
     if argv[1] in ("install", "bootstrap", "list-tools", "subagent"):
