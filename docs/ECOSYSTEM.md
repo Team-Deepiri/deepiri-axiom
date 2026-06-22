@@ -10,7 +10,7 @@ Deepiri Axiom v2 scans your machine and sibling repos, then injects live context
 | **Model providers** | Ollama, OpenAI/Anthropic/Gemini API keys (presence only), vLLM on :8000 |
 | **Apps** | Cursor, Claude Code, Gemini CLI, OpenCode, Docker, kubectl, gh |
 | **Local repos** | Sibling `deepiri-*` and `diri-*` clones |
-| **Links** | Inferred HTTP/import/grpc edges between detected repos |
+| **Links** | Inferred from local manifests (package.json, go.mod, .gitmodules, compose) — not hardcoded |
 
 ## Commands
 
@@ -22,6 +22,20 @@ python3 setup.py link
 python3 setup.py status
 python3 setup.py doctor
 ```
+
+## Org catalog (dynamic, not hardcoded)
+
+On scan, Axiom fetches **Team-Deepiri** public repos via `gh api` or GitHub REST (optional `GITHUB_TOKEN`), caches to `.axiom/org-catalog.json` (24h TTL), and classifies repos by name/description heuristics.
+
+Offline or rate-limited? Uses stale cache if present.
+
+## Local clone discovery
+
+Not only siblings in a `Deepiri/` folder:
+
+- Scans anchor, parents, `~/Documents/Deepiri`, `~/src`, `~/projects`, `~/code`, etc.
+- Set **`DEEPIRI_CLONE_ROOTS`** (pathsep-separated) for custom clone locations
+- Matches repos by **`git remote`** (`Team-Deepiri/<repo>`) even when the folder name differs
 
 ## Manifest
 
