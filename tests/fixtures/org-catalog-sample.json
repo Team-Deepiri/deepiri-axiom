@@ -1,0 +1,28 @@
+{
+  "org": "Team-Deepiri",
+  "fetched_at": 1700000000.0,
+  "source": "test-fixture",
+  "repos": [
+    {
+      "name": "deepiri-axiom",
+      "category": "infra",
+      "role": "AI systems architect subagent",
+      "stack": "python",
+      "default_port": null
+    },
+    {
+      "name": "deepiri-platform",
+      "category": "platform",
+      "role": "Main monorepo",
+      "stack": "node",
+      "default_port": null
+    },
+    {
+      "name": "diri-cyrex",
+      "category": "ai-runtime",
+      "role": "Cyrex agentic runtime",
+      "stack": "python",
+      "default_port": null
+    }
+  ]
+}
