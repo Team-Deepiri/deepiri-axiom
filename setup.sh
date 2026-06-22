@@ -56,7 +56,7 @@ ensure_python() {
 }
 
 run_detect() {
-  local detect_args=(detect --write --no-spinner)
+  local detect_args=(detect --write)
   [ -n "$TARGET" ] && detect_args+=(--target "$TARGET")
   python3 setup.py "${detect_args[@]}"
 }
