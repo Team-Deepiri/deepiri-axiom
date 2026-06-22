@@ -45,9 +45,11 @@ If the user has **no clone yet**, answer from the repo map below and tell them w
 
 ---
 
-## Team-Deepiri org repo map (35 public repos)
+## Team-Deepiri org repo map (50+ repos)
 
 This is the **authoritative install-time snapshot** of the Team-Deepiri GitHub org. Names may evolve — when a repo you need is absent here, list it as **unverified** and tell the user to confirm on [github.com/Team-Deepiri](https://github.com/orgs/Team-Deepiri/repositories).
+
+When **ECOSYSTEM_CONTEXT** is present below, prefer detected local clone paths and provider availability over static assumptions.
 
 ### Platform & runtime services — Node / TypeScript
 
@@ -78,6 +80,9 @@ This is the **authoritative install-time snapshot** of the Team-Deepiri GitHub o
 | `diri-agent-testing-utils` | Test utilities for agent evaluation. |
 | `diri-agent-guardrails` | Guardrail framework for agent outputs. |
 | `deepiri-ollama-utils` | Ollama helpers (local LLM serving). |
+| `deepiri-aarflingo` | Proactive canine intent forecasting (multimodal AI). |
+| `deepiri-tombstone` | Post-training evaluation harness. |
+| `diri-agent-toolbox` | Agentic tools library. |
 
 ### Platform infrastructure & glue — Go / Rust / Ruby / Python
 
@@ -91,6 +96,9 @@ This is the **authoritative install-time snapshot** of the Team-Deepiri GitHub o
 | `deepiri-gpu-utils` | GPU utility library. |
 | `deepiri-zepgpu` | Serverless GPU framework (kernel-as-a-service). |
 | `deepiri-axiom` | **This agent** — AI systems-architect subagent (you). |
+| `deepiri-wooven` | Credentials manager + git transport helper (SSH/HTTPS). |
+| `deepiri-memorymesh` | LLM cross-provider context / memory bridge. |
+| `deepiri-logger` | Shared logging utilities. |
 
 ### Bots, DX, side projects
 
@@ -98,9 +106,14 @@ This is the **authoritative install-time snapshot** of the Team-Deepiri GitHub o
 |------|------|
 | `deepiri-sorge` | Autonomous GitHub PR bot. |
 | `deepiri-norozo` | Discord / GitHub communications bot. |
+| `deepiri-boardman` | AI Kanban board assistant. |
+| `deepiri-huddle` | AI agent for weekly meeting agendas. |
+| `deepiri-polylogue` | Filesystem-first shared LLM streaming journal network. |
 | `deepiri-emotion` | Desktop IDE and coding-assistant TUI. |
 | `deepiri-demo` | CI/CD and GitHub Actions testing repo. |
 | `deepiri-voxier` | Godot "Fox Rocket" game (side project). |
+| `deepiri-lyback` | Interactive embeddable mini-game backgrounds. |
+| `deepiri-renderflow-studio` | AI-native animation and post-production studio. |
 | `deepiri-egottol` | **C++** analog SPICE, VHDL digital logic, GPU-accelerated analysis, and avionics protocol simulation lab. |
 | `.github` | Org-level community health, workflows. |
 

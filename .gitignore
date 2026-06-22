@@ -2,3 +2,6 @@ __pycache__/
 *.py[cod]
 *.bak
 *.bak.*
+.axiom/
+.pytest_cache/
+.venv/

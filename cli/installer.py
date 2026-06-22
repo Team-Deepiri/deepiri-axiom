@@ -12,6 +12,7 @@ import threading
 from pathlib import Path
 
 from cli.repo_cartography import build_target_cartography, global_user_cartography
+from ecosystem.scanner import ecosystem_context_markdown
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 PROMPTS = REPO_ROOT / "prompts"
@@ -371,7 +372,11 @@ def run_global_install(
 ) -> None:
     """Register configs under ``~/.cursor`` and ``~/.gemini`` when not ``--no-global``."""
     # User-level files must not embed a frozen tree snapshot (stale across workspaces).
-    user_mapping = {**mapping, "TARGET_REPO_CARTOGRAPHY": global_user_cartography()}
+    user_mapping = {
+        **mapping,
+        "TARGET_REPO_CARTOGRAPHY": global_user_cartography(),
+        "ECOSYSTEM_CONTEXT": ecosystem_context_markdown(REPO_ROOT),
+    }
 
     global_ops: list[tuple[str, Path, str]] = []
 
@@ -443,6 +448,7 @@ def run_install(args: argparse.Namespace) -> int:
     copilot_brief = read_text(PROMPTS / "copilot-brief.md")
     axiom_branch_tools = read_text(PROMPTS / "axiom-branch-tools.md")
     target_cartography = build_target_cartography(target)
+    ecosystem_ctx = ecosystem_context_markdown(target)
 
     mapping = {
         "DEEPIRI_CONTEXT": deepiri_ctx,
@@ -451,6 +457,7 @@ def run_install(args: argparse.Namespace) -> int:
         "COPILOT_BRIEF": copilot_brief,
         "AXIOM_BRANCH_TOOLS": axiom_branch_tools,
         "TARGET_REPO_CARTOGRAPHY": target_cartography,
+        "ECOSYSTEM_CONTEXT": ecosystem_ctx,
     }
 
     use_spinner = not args.no_spinner
