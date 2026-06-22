@@ -188,6 +188,7 @@ axiom_outro_full() {
   axiom_say "I'm installed. Here's how to use me — read this, it's the whole point:"
   axiom_pause
   axiom_say "${BOLD}In Cursor:${RESET} open the agent/subagent menu and pick ${BOLD}deepiri-axiom${RESET} (Deepiri Genius). Restart Cursor if I don't show up. I'm also at .cursor/agents/deepiri-axiom.md in your target repo."
+  axiom_say "I installed ${BOLD}46 skills${RESET} under .cursor/skills/ and .claude/skills/ — gateway, Cyrex, Persola, vizult, AXIOM modes, and more. Cursor also gets them globally in ~/.cursor/skills/."
   axiom_say "${BOLD}In Claude Code / Gemini / Copilot / OpenCode:${RESET} my instructions are in the project files this install just wrote — CLAUDE.md, GEMINI.md, .github/copilot-instructions.md, .opencode/, etc."
   axiom_pause
   axiom_say "Ask me things like: \"which repo owns Persola fine-tuning?\", \"trace a request from the gateway to Cyrex\", \"where should this migration live?\", \"what's the blast radius of this change?\""
