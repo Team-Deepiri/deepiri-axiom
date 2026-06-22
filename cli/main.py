@@ -3,17 +3,31 @@
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from pathlib import Path
 
 from cli.installer import find_default_target, run_install, tool_detection
+from ecosystem.doctor import doctor_exit_code, run_doctor
+from ecosystem.manifest import load_manifest, manifest_path
+from ecosystem.scanner import scan_ecosystem
 
 
 def _normalize_argv(argv: list[str]) -> list[str]:
     """Legacy: ``python setup.py --dry-run`` → ``python setup.py install --dry-run``."""
     if len(argv) <= 1:
         return argv + ["install"]
-    if argv[1] in ("install", "bootstrap", "list-tools", "subagent"):
+    known = (
+        "install",
+        "bootstrap",
+        "list-tools",
+        "subagent",
+        "detect",
+        "link",
+        "doctor",
+        "status",
+    )
+    if argv[1] in known:
         return argv
     return [argv[0], "install"] + argv[1:]
 
@@ -51,13 +65,64 @@ def cmd_subagent(args: argparse.Namespace) -> int:
     return run_install(args)
 
 
-def _add_install_arguments(p: argparse.ArgumentParser) -> None:
+def cmd_detect(args: argparse.Namespace) -> int:
+    """Scan device, providers, apps, and sibling repos."""
+    target = (args.target or find_default_target()).resolve()
+    manifest = scan_ecosystem(target, write=args.write)
+    print(f"Ecosystem scan @ {target}")
+    print(json.dumps(manifest.to_dict(), indent=2))
+    if args.write:
+        print(f"\nWrote {manifest_path(target)}")
+    return 0
+
+
+def cmd_link(args: argparse.Namespace) -> int:
+    """Refresh ecosystem manifest and repo link graph."""
+    target = (args.target or find_default_target()).resolve()
+    manifest = scan_ecosystem(target, write=True)
+    print(f"Linked {len(manifest.links)} relationship(s) across {len(manifest.repos)} repo(s).")
+    print(f"Manifest: {manifest_path(target)}")
+    return 0
+
+
+def cmd_doctor(args: argparse.Namespace) -> int:
+    """Run health checks for axiom + ecosystem setup."""
+    target = (args.target or find_default_target()).resolve()
+    results = run_doctor(target)
+    print(f"Doctor @ {target}\n")
+    for r in results:
+        mark = "OK" if r.ok else "FAIL"
+        print(f"  [{mark}] {r.name}: {r.message}")
+    return doctor_exit_code(results)
+
+
+def cmd_status(args: argparse.Namespace) -> int:
+    """Show current ecosystem manifest summary."""
+    target = (args.target or find_default_target()).resolve()
+    manifest = load_manifest(target)
+    if manifest is None:
+        print(f"No manifest at {manifest_path(target)} — run ./setup.sh or `setup.py detect --write`")
+        return 1
+    print(f"Status @ {target}")
+    print(f"  generated: {manifest.generated_at}")
+    print(f"  repos: {len(manifest.repos)}")
+    print(f"  providers (available): {sum(1 for p in manifest.providers if p.get('available'))}")
+    print(f"  links: {len(manifest.links)}")
+    print(f"  recommended_tools: {', '.join(manifest.recommended_tools) or '(none)'}")
+    return 0
+
+
+def _add_target_argument(p: argparse.ArgumentParser) -> None:
     p.add_argument(
         "--target",
         type=Path,
         default=None,
-        help="Project root to install into (default: git root of cwd, or ../deepiri-platform if cwd is in deepiri-axiom source)",
+        help="Project root (default: git root of cwd, or sibling deepiri-platform when inside axiom source)",
     )
+
+
+def _add_install_arguments(p: argparse.ArgumentParser) -> None:
+    _add_target_argument(p)
     p.add_argument(
         "--tools",
         default="all",
@@ -91,12 +156,7 @@ def _add_install_arguments(p: argparse.ArgumentParser) -> None:
 
 
 def _add_install_subagent_only_arguments(p: argparse.ArgumentParser) -> None:
-    p.add_argument(
-        "--target",
-        type=Path,
-        default=None,
-        help="Project root (default: git root of cwd, or ../deepiri-platform if cwd is inside deepiri-axiom)",
-    )
+    _add_target_argument(p)
     p.add_argument(
         "--with-global",
         action="store_true",
@@ -115,7 +175,7 @@ def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="deepiri-axiom",
         description=(
-            "Install Deepiri Genius / AXIOM prompts for Cursor, Claude Code, Copilot, Gemini, OpenCode."
+            "Deepiri Axiom — ecosystem-aware AI architect installer for Cursor, Claude, Copilot, Gemini, OpenCode."
         ),
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -146,6 +206,38 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Show which optional tools are detected on PATH.",
     )
     list_p.set_defaults(func=cmd_list_tools)
+
+    detect_p = subparsers.add_parser(
+        "detect",
+        help="Scan device, model providers, apps, and sibling Deepiri repos.",
+    )
+    _add_target_argument(detect_p)
+    detect_p.add_argument(
+        "--write",
+        action="store_true",
+        help="Persist results to .axiom/ecosystem.json",
+    )
+    detect_p.set_defaults(func=cmd_detect)
+
+    link_p = subparsers.add_parser(
+        "link",
+        help="Refresh .axiom/ecosystem.json and inferred repo link graph.",
+    )
+    _add_target_argument(link_p)
+    link_p.set_defaults(func=cmd_link)
+
+    doctor_p = subparsers.add_parser("doctor", help="Health checks for axiom + ecosystem setup.")
+    _add_target_argument(doctor_p)
+    doctor_p.add_argument(
+        "--no-spinner",
+        action="store_true",
+        help="Disable animated spinner (for CI or non-TTY)",
+    )
+    doctor_p.set_defaults(func=cmd_doctor)
+
+    status_p = subparsers.add_parser("status", help="Show ecosystem manifest summary.")
+    _add_target_argument(status_p)
+    status_p.set_defaults(func=cmd_status)
 
     return parser
 

@@ -12,6 +12,8 @@ import threading
 from pathlib import Path
 
 from cli.repo_cartography import build_target_cartography, global_user_cartography
+from cli.skills_installer import install_global_cursor_skills, skill_install_operations
+from ecosystem.scanner import ecosystem_context_markdown
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 PROMPTS = REPO_ROOT / "prompts"
@@ -371,7 +373,11 @@ def run_global_install(
 ) -> None:
     """Register configs under ``~/.cursor`` and ``~/.gemini`` when not ``--no-global``."""
     # User-level files must not embed a frozen tree snapshot (stale across workspaces).
-    user_mapping = {**mapping, "TARGET_REPO_CARTOGRAPHY": global_user_cartography()}
+    user_mapping = {
+        **mapping,
+        "TARGET_REPO_CARTOGRAPHY": global_user_cartography(),
+        "ECOSYSTEM_CONTEXT": ecosystem_context_markdown(REPO_ROOT),
+    }
 
     global_ops: list[tuple[str, Path, str]] = []
 
@@ -383,25 +389,53 @@ def run_global_install(
         body = render_template(read_text(TEMPLATES / "gemini" / "GEMINI.md.j2"), user_mapping)
         global_ops.append(("User Gemini context", global_gemini_context_path(), body))
 
-    if not global_ops:
+    if not global_ops and "cursor" not in tools:
         return
 
-    print()
-    print("User-level (available in any project / workspace):")
+    if global_ops:
+        print()
+        print("User-level (available in any project / workspace):")
 
-    if use_spinner:
-        with Spinner("Registering user-level tools…", enabled=True) as sp:
-            for label, path, body in global_ops:
-                sp.update(f"{label}…")
-                write_file(path, body, dry_run=args.dry_run, force=args.force, quiet=True)
-        for _label, path, body in global_ops:
-            if args.dry_run:
-                print(f"  [dry-run] would write {path} ({len(body)} bytes)")
-            else:
-                print(f"  wrote {path}")
-    else:
-        for _label, path, body in global_ops:
-            write_file(path, body, dry_run=args.dry_run, force=args.force, quiet=False)
+        if use_spinner:
+            with Spinner("Registering user-level tools…", enabled=True) as sp:
+                for label, path, body in global_ops:
+                    sp.update(f"{label}…")
+                    write_file(path, body, dry_run=args.dry_run, force=args.force, quiet=True)
+            for _label, path, body in global_ops:
+                if args.dry_run:
+                    print(f"  [dry-run] would write {path} ({len(body)} bytes)")
+                else:
+                    print(f"  wrote {path}")
+        else:
+            for _label, path, body in global_ops:
+                write_file(path, body, dry_run=args.dry_run, force=args.force, quiet=False)
+
+    if "cursor" in tools:
+        from cli.skills_installer import list_skill_dirs
+
+        n = len(list_skill_dirs())
+        if global_ops:
+            print()
+        else:
+            print()
+            print("User-level (available in any project / workspace):")
+        if use_spinner:
+            with Spinner("User Cursor skills…", enabled=True):
+                install_global_cursor_skills(
+                    user_mapping,
+                    dry_run=args.dry_run,
+                    force=args.force,
+                    quiet=True,
+                )
+            if not args.dry_run:
+                print(f"  wrote {n} skill(s) under {Path.home() / '.cursor' / 'skills'}")
+        else:
+            install_global_cursor_skills(
+                user_mapping,
+                dry_run=args.dry_run,
+                force=args.force,
+                quiet=False,
+            )
 
     if not args.dry_run and "gemini" in tools:
         gem = Path.home() / ".gemini" / "GEMINI.md"
@@ -443,6 +477,7 @@ def run_install(args: argparse.Namespace) -> int:
     copilot_brief = read_text(PROMPTS / "copilot-brief.md")
     axiom_branch_tools = read_text(PROMPTS / "axiom-branch-tools.md")
     target_cartography = build_target_cartography(target)
+    ecosystem_ctx = ecosystem_context_markdown(target)
 
     mapping = {
         "DEEPIRI_CONTEXT": deepiri_ctx,
@@ -451,6 +486,7 @@ def run_install(args: argparse.Namespace) -> int:
         "COPILOT_BRIEF": copilot_brief,
         "AXIOM_BRANCH_TOOLS": axiom_branch_tools,
         "TARGET_REPO_CARTOGRAPHY": target_cartography,
+        "ECOSYSTEM_CONTEXT": ecosystem_ctx,
     }
 
     use_spinner = not args.no_spinner
@@ -497,13 +533,6 @@ def run_install(args: argparse.Namespace) -> int:
         )
         operations.append(
             (
-                "Claude Code skill",
-                target / ".claude" / "skills" / "deepiri-axiom" / "SKILL.md",
-                render_template(read_text(TEMPLATES / "claude" / "skills-SKILL.md.j2"), mapping),
-            )
-        )
-        operations.append(
-            (
                 "Claude Code rules",
                 target / ".claude" / "rules" / "deepiri-axiom.md",
                 render_template(read_text(TEMPLATES / "claude" / "rules.md.j2"), mapping),
@@ -516,6 +545,9 @@ def run_install(args: argparse.Namespace) -> int:
                 read_text(TEMPLATES / "claude" / "command-axiom.md"),
             )
         )
+
+    if "cursor" in tools or "claude" in tools:
+        operations.extend(skill_install_operations(target, mapping, tools=tools))
 
     if "copilot" in tools:
         operations.append(
@@ -739,6 +771,13 @@ def run_install(args: argparse.Namespace) -> int:
         print("  If it does not appear, restart Cursor; project file is at .cursor/agents/deepiri-axiom.md")
         if getattr(args, "no_global", True):
             print("  (Project-only install — no user-level copy under ~/.cursor)")
+
+    if ("cursor" in tools or "claude" in tools) and not args.dry_run:
+        from cli.skills_installer import list_skill_dirs
+
+        n = len(list_skill_dirs())
+        print()
+        print(f"Skills: installed {n} skill(s) to project .cursor/skills/ and/or .claude/skills/ (see skills/README.md).")
 
     print("Done.")
     return 0

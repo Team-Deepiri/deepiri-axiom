@@ -1,11 +1,31 @@
 # Deepiri Axiom
 
-Install **Deepiri Axiom** — the **canonical Deepiri systems architect** — into your AI tools: **Cursor**, **Claude Code**, **GitHub Copilot**, **Gemini CLI**, and **OpenCode**. Prompts are **doc-grounded** (`docs/DOCUMENTATION_INDEX.md`, `docs/architecture/*`) and carry the **full Team-Deepiri org repo map** (~35 public repos) so the installed agent can act as a **1-on-1 Deepiri expert**, with or without a local clone.
+Install **Deepiri Axiom** — the **canonical Deepiri systems architect** — into your AI tools: **Cursor**, **Claude Code**, **GitHub Copilot**, **Gemini CLI**, and **OpenCode**. Prompts are **doc-grounded** (`docs/DOCUMENTATION_INDEX.md`, `docs/architecture/*`) and carry the **full Team-Deepiri org repo map** (~50+ repos) so the installed agent can act as a **1-on-1 Deepiri expert**, with or without a local clone.
 
-- **No pip dependencies** — only Python 3.10+ stdlib.
+- **Ecosystem-aware** — `./setup.sh` auto-detects your device, model providers, AI apps, and sibling Deepiri clones; links them into `.axiom/ecosystem.json` and injects live context into prompts.
+- **No runtime pip dependencies** — only Python 3.10+ stdlib (pytest optional for dev/CI).
 - **Spinner** during install (disable with `--no-spinner` or in non-TTY).
 - **Backups** — existing files are saved as `*.bak` before overwrite (skip with `--force`).
 - **Transparent** — the full prompt lives in [`prompts/`](prompts); there are no hidden directives.
+
+## One command setup
+
+```bash
+git clone https://github.com/Team-Deepiri/deepiri-axiom.git
+cd deepiri-axiom
+./setup.sh
+```
+
+`./setup.sh` will:
+
+1. Scan hardware, model providers (Ollama, API keys), and installed AI CLIs
+2. Discover sibling `deepiri-*` / `diri-*` repos in your workspace
+3. Write `.axiom/ecosystem.json` and inferred repo link graph
+4. Install Axiom into Cursor, Claude, Copilot, Gemini, OpenCode (auto-selected from detection)
+5. Install **46 packaged skills** (gateway, Cyrex, Persola, vizult, AXIOM modes, …) to `.cursor/skills/` and `.claude/skills/`
+6. Run `doctor` health checks
+
+Options: `--detect` (scan only), `--doctor`, `--target PATH`, `--no-global`. See `./setup.sh --help`.
 
 ## 1-on-1 Deepiri expert (no target repo needed)
 
@@ -86,6 +106,14 @@ python3 setup.py install --target /path/to/deepiri-platform
 | `install` | Write **all** tool templates (default `--tools all`) + user-level agents unless `--no-global` |
 | `bootstrap` | Same as `install` — onboarding-friendly name |
 | `list-tools` | Print PATH hints (`claude`, `gemini`, `opencode`); use with `--tools auto` if you want conditional OpenCode |
+| `detect` | Scan device, providers, apps, sibling repos (`--write` persists manifest) |
+| `link` | Refresh `.axiom/ecosystem.json` and repo link graph |
+| `doctor` | Health checks (Python version, manifest, agent install) |
+| `status` | Show ecosystem manifest summary |
+
+### Skills library
+
+**46 skills** in [`skills/`](skills/) install with `./setup.sh` to `.cursor/skills/`, `.claude/skills/`, and `~/.cursor/skills/`. See `skills/README.md`. Regenerate: `python3 scripts/generate_skills.py`
 
 ```bash
 python3 setup.py list-tools
