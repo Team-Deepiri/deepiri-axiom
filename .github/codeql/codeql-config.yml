@@ -1,0 +1,14 @@
+name: deepiri-axiom-codeql-config
+
+# Scan installer code only; prompts/templates are markdown/JSON content, not Python.
+paths:
+  - cli
+  - install.py
+
+paths-ignore:
+  - "**/__pycache__/**"
+  - "**/.pytest_cache/**"
+  - "**/.ruff_cache/**"
+  - "**/.venv/**"
+  - "**/venv/**"
+  - "**/*.pyc"
