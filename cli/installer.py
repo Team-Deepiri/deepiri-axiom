@@ -25,7 +25,9 @@ class Spinner:
 
     FRAMES = ("|", "/", "-", "\\")
 
-    def __init__(self, message: str = "", *, enabled: bool = True, interval: float = 0.09) -> None:
+    def __init__(
+        self, message: str = "", *, enabled: bool = True, interval: float = 0.09
+    ) -> None:
         self.message = message
         self.enabled = enabled and sys.stdout.isatty()
         self.interval = interval
@@ -382,11 +384,17 @@ def run_global_install(
     global_ops: list[tuple[str, Path, str]] = []
 
     if "cursor" in tools:
-        body = render_template(read_text(TEMPLATES / "cursor" / "agent.md.j2"), user_mapping)
-        global_ops.append(("User Cursor agent (all workspaces)", global_cursor_agent_path(), body))
+        body = render_template(
+            read_text(TEMPLATES / "cursor" / "agent.md.j2"), user_mapping
+        )
+        global_ops.append(
+            ("User Cursor agent (all workspaces)", global_cursor_agent_path(), body)
+        )
 
     if "gemini" in tools:
-        body = render_template(read_text(TEMPLATES / "gemini" / "GEMINI.md.j2"), user_mapping)
+        body = render_template(
+            read_text(TEMPLATES / "gemini" / "GEMINI.md.j2"), user_mapping
+        )
         global_ops.append(("User Gemini context", global_gemini_context_path(), body))
 
     if not global_ops and "cursor" not in tools:
@@ -400,7 +408,9 @@ def run_global_install(
             with Spinner("Registering user-level tools…", enabled=True) as sp:
                 for label, path, body in global_ops:
                     sp.update(f"{label}…")
-                    write_file(path, body, dry_run=args.dry_run, force=args.force, quiet=True)
+                    write_file(
+                        path, body, dry_run=args.dry_run, force=args.force, quiet=True
+                    )
             for _label, path, body in global_ops:
                 if args.dry_run:
                     print(f"  [dry-run] would write {path} ({len(body)} bytes)")
@@ -408,7 +418,9 @@ def run_global_install(
                     print(f"  wrote {path}")
         else:
             for _label, path, body in global_ops:
-                write_file(path, body, dry_run=args.dry_run, force=args.force, quiet=False)
+                write_file(
+                    path, body, dry_run=args.dry_run, force=args.force, quiet=False
+                )
 
     if "cursor" in tools:
         from cli.skills_installer import list_skill_dirs
@@ -428,7 +440,9 @@ def run_global_install(
                     quiet=True,
                 )
             if not args.dry_run:
-                print(f"  wrote {n} skill(s) under {Path.home() / '.cursor' / 'skills'}")
+                print(
+                    f"  wrote {n} skill(s) under {Path.home() / '.cursor' / 'skills'}"
+                )
         else:
             install_global_cursor_skills(
                 user_mapping,
@@ -498,14 +512,19 @@ def run_install(args: argparse.Namespace) -> int:
             (
                 "Cursor agent",
                 target / ".cursor" / "agents" / "deepiri-axiom.md",
-                render_template(read_text(TEMPLATES / "cursor" / "agent.md.j2"), mapping),
+                render_template(
+                    read_text(TEMPLATES / "cursor" / "agent.md.j2"), mapping
+                ),
             )
         )
         operations.append(
             (
                 "Cursor rule (.mdc)",
                 target / ".cursor" / "rules" / "deepiri-axiom.mdc",
-                render_template(read_text(TEMPLATES / "cursor" / "rules-deepiri-axiom.md.j2"), mapping),
+                render_template(
+                    read_text(TEMPLATES / "cursor" / "rules-deepiri-axiom.md.j2"),
+                    mapping,
+                ),
             )
         )
 
@@ -521,21 +540,27 @@ def run_install(args: argparse.Namespace) -> int:
             (
                 "CLAUDE.local.md",
                 target / "CLAUDE.local.md",
-                render_template(read_text(TEMPLATES / "claude" / "CLAUDE.local.md.j2"), mapping),
+                render_template(
+                    read_text(TEMPLATES / "claude" / "CLAUDE.local.md.j2"), mapping
+                ),
             )
         )
         operations.append(
             (
                 "Claude Code agent",
                 target / ".claude" / "agents" / "deepiri-axiom.md",
-                render_template(read_text(TEMPLATES / "claude" / "agent.md.j2"), mapping),
+                render_template(
+                    read_text(TEMPLATES / "claude" / "agent.md.j2"), mapping
+                ),
             )
         )
         operations.append(
             (
                 "Claude Code rules",
                 target / ".claude" / "rules" / "deepiri-axiom.md",
-                render_template(read_text(TEMPLATES / "claude" / "rules.md.j2"), mapping),
+                render_template(
+                    read_text(TEMPLATES / "claude" / "rules.md.j2"), mapping
+                ),
             )
         )
         operations.append(
@@ -554,7 +579,10 @@ def run_install(args: argparse.Namespace) -> int:
             (
                 "Copilot instructions (repo-wide)",
                 target / ".github" / "copilot-instructions.md",
-                render_template(read_text(TEMPLATES / "copilot" / "copilot-instructions.md.j2"), mapping),
+                render_template(
+                    read_text(TEMPLATES / "copilot" / "copilot-instructions.md.j2"),
+                    mapping,
+                ),
             )
         )
         operations.append(
@@ -562,7 +590,11 @@ def run_install(args: argparse.Namespace) -> int:
                 "Copilot path-specific instructions",
                 target / ".github" / "instructions" / "deepiri-axiom.instructions.md",
                 render_template(
-                    read_text(TEMPLATES / "copilot" / "instructions-deepiri-axiom.instructions.md.j2"),
+                    read_text(
+                        TEMPLATES
+                        / "copilot"
+                        / "instructions-deepiri-axiom.instructions.md.j2"
+                    ),
                     mapping,
                 ),
             )
@@ -573,7 +605,9 @@ def run_install(args: argparse.Namespace) -> int:
             (
                 "GEMINI.md",
                 target / "GEMINI.md",
-                render_template(read_text(TEMPLATES / "gemini" / "GEMINI.md.j2"), mapping),
+                render_template(
+                    read_text(TEMPLATES / "gemini" / "GEMINI.md.j2"), mapping
+                ),
             )
         )
 
@@ -582,14 +616,21 @@ def run_install(args: argparse.Namespace) -> int:
             (
                 "OpenCode instructions",
                 target / ".opencode" / "instructions.md",
-                render_template(read_text(TEMPLATES / "opencode" / "instructions.md.j2"), mapping),
+                render_template(
+                    read_text(TEMPLATES / "opencode" / "instructions.md.j2"), mapping
+                ),
             )
         )
         operations.append(
             (
                 "OpenCode agent",
                 target / ".opencode" / "agents" / "deepiri-axiom.md",
-                render_template(read_text(TEMPLATES / "opencode" / "agents" / "deepiri-axiom.md.j2"), mapping),
+                render_template(
+                    read_text(
+                        TEMPLATES / "opencode" / "agents" / "deepiri-axiom.md.j2"
+                    ),
+                    mapping,
+                ),
             )
         )
         operations.append(
@@ -608,7 +649,9 @@ def run_install(args: argparse.Namespace) -> int:
         with Spinner("deepiri-axiom…", enabled=True) as sp:
             for label, path, body in operations:
                 sp.update(f"{label}…")
-                write_file(path, body, dry_run=args.dry_run, force=args.force, quiet=True)
+                write_file(
+                    path, body, dry_run=args.dry_run, force=args.force, quiet=True
+                )
         for _label, path, body in operations:
             if args.dry_run:
                 print(f"  [dry-run] would write {path} ({len(body)} bytes)")
@@ -636,7 +679,9 @@ def run_install(args: argparse.Namespace) -> int:
                     quiet=True,
                 )
                 write_file_if_absent(ci_path, ci_body, dry_run=args.dry_run, quiet=True)
-                write_file_if_absent(agents_path, agents_body, dry_run=args.dry_run, quiet=True)
+                write_file_if_absent(
+                    agents_path, agents_body, dry_run=args.dry_run, quiet=True
+                )
             if args.dry_run:
                 print(f"  [dry-run] would write/merge {mcp_path}")
                 if ci_missing:
@@ -658,7 +703,9 @@ def run_install(args: argparse.Namespace) -> int:
                 quiet=False,
             )
             write_file_if_absent(ci_path, ci_body, dry_run=args.dry_run, quiet=False)
-            write_file_if_absent(agents_path, agents_body, dry_run=args.dry_run, quiet=False)
+            write_file_if_absent(
+                agents_path, agents_body, dry_run=args.dry_run, quiet=False
+            )
 
     if "claude" in tools:
         s_json = target / ".claude" / "settings.json"
@@ -715,7 +762,9 @@ def run_install(args: argparse.Namespace) -> int:
                     force=args.force,
                     quiet=True,
                 )
-                write_file_if_absent(gignore, gignore_body, dry_run=args.dry_run, quiet=True)
+                write_file_if_absent(
+                    gignore, gignore_body, dry_run=args.dry_run, quiet=True
+                )
             if args.dry_run:
                 print(f"  [dry-run] would write/merge {gset}")
                 if gignore_missing:
@@ -732,7 +781,9 @@ def run_install(args: argparse.Namespace) -> int:
                 force=args.force,
                 quiet=False,
             )
-            write_file_if_absent(gignore, gignore_body, dry_run=args.dry_run, quiet=False)
+            write_file_if_absent(
+                gignore, gignore_body, dry_run=args.dry_run, quiet=False
+            )
 
     if "opencode" in tools:
         oc_path = target / "opencode.json"
@@ -767,8 +818,12 @@ def run_install(args: argparse.Namespace) -> int:
     )
     if is_subagent_flow and "cursor" in tools:
         print()
-        print("Cursor: open the **subagent / custom agent** menu and run **deepiri-axiom** (Deepiri Genius).")
-        print("  If it does not appear, restart Cursor; project file is at .cursor/agents/deepiri-axiom.md")
+        print(
+            "Cursor: open the **subagent / custom agent** menu and run **deepiri-axiom** (Deepiri Genius)."
+        )
+        print(
+            "  If it does not appear, restart Cursor; project file is at .cursor/agents/deepiri-axiom.md"
+        )
         if getattr(args, "no_global", True):
             print("  (Project-only install — no user-level copy under ~/.cursor)")
 
@@ -777,7 +832,9 @@ def run_install(args: argparse.Namespace) -> int:
 
         n = len(list_skill_dirs())
         print()
-        print(f"Skills: installed {n} skill(s) to project .cursor/skills/ and/or .claude/skills/ (see skills/README.md).")
+        print(
+            f"Skills: installed {n} skill(s) to project .cursor/skills/ and/or .claude/skills/ (see skills/README.md)."
+        )
 
     print("Done.")
     return 0

@@ -44,7 +44,9 @@ def _workspace_patterns(root: Path) -> list[str]:
     if isinstance(ws, dict):
         pkgs = ws.get("packages")
         if isinstance(pkgs, list):
-            return [str(x).strip() for x in pkgs if isinstance(x, str) and str(x).strip()]
+            return [
+                str(x).strip() for x in pkgs if isinstance(x, str) and str(x).strip()
+            ]
     return []
 
 
@@ -99,10 +101,14 @@ def build_target_cartography(target: Path) -> str:
 
     doc_index = root / "docs" / "DOCUMENTATION_INDEX.md"
     if doc_index.is_file():
-        lines.append("- **Docs index:** `docs/DOCUMENTATION_INDEX.md` (use as navigation hub)")
+        lines.append(
+            "- **Docs index:** `docs/DOCUMENTATION_INDEX.md` (use as navigation hub)"
+        )
     bp = root / "BRANCH_PROTECTION.md"
     if bp.is_file():
-        lines.append("- **Branch policy:** `BRANCH_PROTECTION.md` (read before merge/release advice)")
+        lines.append(
+            "- **Branch policy:** `BRANCH_PROTECTION.md` (read before merge/release advice)"
+        )
 
     for hint in (
         "team_submodule_commands",
@@ -158,7 +164,9 @@ def build_target_cartography(target: Path) -> str:
         lines.append("| name | path |")
         lines.append("|------|------|")
         for name, rel in packages[:_MAX_LIST]:
-            lines.append(f"| `{_markdown_escape_cell(name)}` | `{_markdown_escape_cell(rel)}` |")
+            lines.append(
+                f"| `{_markdown_escape_cell(name)}` | `{_markdown_escape_cell(rel)}` |"
+            )
         if len(packages) > _MAX_LIST:
             lines.append(f"| … | *{len(packages) - _MAX_LIST} more* |")
 

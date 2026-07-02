@@ -46,7 +46,9 @@ def cmd_install(args: argparse.Namespace) -> int:
 def cmd_list_tools(_args: argparse.Namespace) -> int:
     """Print PATH-based tool detection hints."""
     d = tool_detection()
-    print("Detected (optional: install uses --tools auto to skip OpenCode when missing):")
+    print(
+        "Detected (optional: install uses --tools auto to skip OpenCode when missing):"
+    )
     for k, v in sorted(d.items()):
         print(f"  {k}: {v}")
     return 0
@@ -80,7 +82,9 @@ def cmd_link(args: argparse.Namespace) -> int:
     """Refresh ecosystem manifest and repo link graph."""
     target = (args.target or find_default_target()).resolve()
     manifest = scan_ecosystem(target, write=True)
-    print(f"Linked {len(manifest.links)} relationship(s) across {len(manifest.repos)} repo(s).")
+    print(
+        f"Linked {len(manifest.links)} relationship(s) across {len(manifest.repos)} repo(s)."
+    )
     print(f"Manifest: {manifest_path(target)}")
     return 0
 
@@ -101,12 +105,16 @@ def cmd_status(args: argparse.Namespace) -> int:
     target = (args.target or find_default_target()).resolve()
     manifest = load_manifest(target)
     if manifest is None:
-        print(f"No manifest at {manifest_path(target)} — run ./setup.sh or `setup.py detect --write`")
+        print(
+            f"No manifest at {manifest_path(target)} — run ./setup.sh or `setup.py detect --write`"
+        )
         return 1
     print(f"Status @ {target}")
     print(f"  generated: {manifest.generated_at}")
     print(f"  repos: {len(manifest.repos)}")
-    print(f"  providers (available): {sum(1 for p in manifest.providers if p.get('available'))}")
+    print(
+        f"  providers (available): {sum(1 for p in manifest.providers if p.get('available'))}"
+    )
     print(f"  links: {len(manifest.links)}")
     print(f"  recommended_tools: {', '.join(manifest.recommended_tools) or '(none)'}")
     return 0
@@ -132,7 +140,9 @@ def _add_install_arguments(p: argparse.ArgumentParser) -> None:
             "Or a comma list: cursor,claude,copilot,gemini,opencode"
         ),
     )
-    p.add_argument("--dry-run", action="store_true", help="Print actions without writing files")
+    p.add_argument(
+        "--dry-run", action="store_true", help="Print actions without writing files"
+    )
     p.add_argument("--force", action="store_true", help="Overwrite without .bak backup")
     p.add_argument(
         "--no-spinner",
@@ -162,7 +172,9 @@ def _add_install_subagent_only_arguments(p: argparse.ArgumentParser) -> None:
         action="store_true",
         help="Also write ~/.cursor/agents/deepiri-axiom.md (no embedded repo tree; safe across workspaces).",
     )
-    p.add_argument("--dry-run", action="store_true", help="Print actions without writing files")
+    p.add_argument(
+        "--dry-run", action="store_true", help="Print actions without writing files"
+    )
     p.add_argument("--force", action="store_true", help="Overwrite without .bak backup")
     p.add_argument(
         "--no-spinner",
@@ -226,7 +238,9 @@ def _build_parser() -> argparse.ArgumentParser:
     _add_target_argument(link_p)
     link_p.set_defaults(func=cmd_link)
 
-    doctor_p = subparsers.add_parser("doctor", help="Health checks for axiom + ecosystem setup.")
+    doctor_p = subparsers.add_parser(
+        "doctor", help="Health checks for axiom + ecosystem setup."
+    )
     _add_target_argument(doctor_p)
     doctor_p.add_argument(
         "--no-spinner",
