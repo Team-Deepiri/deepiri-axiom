@@ -1,6 +1,6 @@
 # Deepiri Axiom skills library
 
-**46 packaged skills** installed by `./setup.sh` into:
+**47 packaged skills** installed by `./setup.sh` into:
 
 | Target | Path |
 |--------|------|
@@ -24,3 +24,4 @@ python3 scripts/generate_skills.py
 - **AXIOM modes** — scan, architect, debug, refactor, review
 - **DX** — ecosystem, doc-grounding, service-boundaries, compose, skaffold, cross-repo
 - **Products** — aarflingo, polylogue, sorge, boardman, huddle, tombstone, emotion, renderflow, egottol
+- **Research** — applied-math
