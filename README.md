@@ -73,9 +73,12 @@ python3 setup.py bootstrap --target /path/to/your/repo
 | Path | Role |
 |------|------|
 | `setup.py` | Thin entry: adds repo root to `sys.path`, calls `cli.main.main()` |
-| `cli/main.py` | `argparse` subcommands (`install`, `list-tools`), legacy argv normalization |
+| `cli/main.py` | `argparse` subcommands (`install`, `bootstrap`, `subagent`, `list-tools`, `detect`, `link`, `doctor`, `status`), legacy argv normalization |
 | `cli/installer.py` | Template rendering, writes, spinner, global install |
+| `cli/repo_cartography.py` | Install-time target-repo snapshot (npm workspaces, services, submodules) fed into prompts |
+| `cli/skills_installer.py` | Installs the packaged skill library into `.cursor/skills/`, `.claude/skills/` |
 | `cli/__main__.py` | Enables `python3 -m cli` |
+| `ecosystem/` | Device/provider/app/repo scanners, manifest, and doctor checks backing `detect`, `link`, `doctor`, `status` — see `docs/ECOSYSTEM.md` |
 
 Same behavior as common internal CLIs: **commands** are functions (`cmd_install`, `cmd_list_tools`) bound with `set_defaults(func=...)`.
 
@@ -105,6 +108,7 @@ python3 setup.py install --target /path/to/deepiri-platform
 |---------|---------|
 | `install` | Write **all** tool templates (default `--tools all`) + user-level agents unless `--no-global` |
 | `bootstrap` | Same as `install` — onboarding-friendly name |
+| `subagent` | **Cursor only, fast path** — `.cursor/agents/`, `.cursor/rules/`; no Claude/Copilot/Gemini/OpenCode files. Add `--with-global` to also write `~/.cursor/agents/deepiri-axiom.md`. Same as `install --preset subagent` |
 | `list-tools` | Print PATH hints (`claude`, `gemini`, `opencode`); use with `--tools auto` if you want conditional OpenCode |
 | `detect` | Scan device, providers, apps, sibling repos (`--write` persists manifest) |
 | `link` | Refresh `.axiom/ecosystem.json` and repo link graph |
@@ -132,6 +136,7 @@ python3 -m cli list-tools
 | `--dry-run` | Show paths only; no writes |
 | `--force` | Overwrite without `.bak` |
 | `--no-spinner` | No animated progress (CI / logs) |
+| `--preset {full,subagent}` | `full` (default) — every integration. `subagent` — shorthand for the `subagent` subcommand (Cursor only, implies `--no-global`) |
 
 Auto-detect target: prefers `../deepiri-platform` next to this repo, then walks up from cwd for `deepiri-platform/` or a tree with `docs/DOCUMENTATION_INDEX.md` + `package.json`.
 
@@ -170,6 +175,9 @@ Older Cursor installs may still have `.cursor/rules/deepiri-platform.md` — rem
 
 ## Contents
 
+- `docs/ECOSYSTEM.md` — what `./setup.sh` / `detect` / `link` scan and write to `.axiom/ecosystem.json`.
+- `scripts/install-subagent-here.sh` — one-shot wrapper: runs `setup.py subagent --target <git root of cwd>` from inside any target repo.
+- `scripts/generate_skills.py` — regenerates the packaged skill library in `skills/` from source (run after editing the skills catalog).
 - `prompts/axiom-core.md` — full AXIOM master prompt (no IDE frontmatter).
 - `prompts/deepiri-context.md` — **Deepiri Genius identity + full Team-Deepiri org repo map** (35 public repos, categorized), service boundaries, and 1-on-1 expert-mode guidance.
 - `prompts/axiom-condensed.md` — short AXIOM behavior for CLAUDE/GEMINI templates (carries a one-line repo pointer).
