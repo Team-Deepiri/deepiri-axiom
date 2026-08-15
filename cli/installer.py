@@ -425,6 +425,7 @@ def run_install(args: argparse.Namespace) -> int:
     axiom_condensed = read_text(PROMPTS / "axiom-condensed.md")
     copilot_brief = read_text(PROMPTS / "copilot-brief.md")
     axiom_branch_tools = read_text(PROMPTS / "axiom-branch-tools.md")
+    qa_workflow = read_text(PROMPTS / "qa-workflow.md")
     target_cartography = build_target_cartography(target)
 
     mapping = {
@@ -433,6 +434,7 @@ def run_install(args: argparse.Namespace) -> int:
         "AXIOM_CONDENSED": axiom_condensed,
         "COPILOT_BRIEF": copilot_brief,
         "AXIOM_BRANCH_TOOLS": axiom_branch_tools,
+        "QA_WORKFLOW": qa_workflow,
         "TARGET_REPO_CARTOGRAPHY": target_cartography,
     }
 
@@ -483,6 +485,15 @@ def run_install(args: argparse.Namespace) -> int:
                 "Claude Code skill",
                 target / ".claude" / "skills" / "deepiri-axiom" / "SKILL.md",
                 render_template(read_text(TEMPLATES / "claude" / "skills-SKILL.md.j2"), mapping),
+            )
+        )
+        operations.append(
+            (
+                "Claude Code skill (QA workflow)",
+                target / ".claude" / "skills" / "deepiri-qa-workflow" / "SKILL.md",
+                render_template(
+                    read_text(TEMPLATES / "claude" / "skills-qa-workflow-SKILL.md.j2"), mapping
+                ),
             )
         )
         operations.append(
