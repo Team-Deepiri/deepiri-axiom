@@ -22,7 +22,7 @@ cd deepiri-axiom
 2. Discover sibling `deepiri-*` / `diri-*` repos in your workspace
 3. Write `.axiom/ecosystem.json` and inferred repo link graph
 4. Install Axiom into Cursor, Claude, Copilot, Gemini, OpenCode (auto-selected from detection)
-5. Install **52 packaged skills** (gateway, Cyrex, Persola, vizult, AXIOM modes, engineering-practice skills, …) to `.cursor/skills/` and `.claude/skills/`
+5. Install **72 packaged skills** (gateway, Cyrex, Persola, vizult, AXIOM modes, engineering-practice skills, …) to `.cursor/skills/` and `.claude/skills/`
 6. Run `doctor` health checks
 
 Options: `--detect` (scan only), `--doctor`, `--target PATH`, `--no-global`. See `./setup.sh --help`.
@@ -117,7 +117,7 @@ python3 setup.py install --target /path/to/deepiri-platform
 
 ### Skills library
 
-**52 skills** in [`skills/`](skills/) install with `./setup.sh` to `.cursor/skills/`, `.claude/skills/`, and `~/.cursor/skills/`. See `skills/README.md`. Regenerate: `python3 scripts/generate_skills.py`
+**72 skills** in [`skills/`](skills/) install with `./setup.sh` to `.cursor/skills/`, `.claude/skills/`, and `~/.cursor/skills/`. See `skills/README.md`. Regenerate: `python3 scripts/generate_skills.py`
 
 ```bash
 python3 setup.py list-tools
