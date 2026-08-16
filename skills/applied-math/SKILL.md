@@ -1,8 +1,9 @@
 ---
 name: applied-math
 description: >-
-  Invent mathematics for a system nobody has modeled yet — observation before formalism,
-  then invariants, symmetry, dimensional analysis, and state-variable discovery, followed
+  Invent mathematics for a system nobody has modeled yet — starting from brainstorming an
+  abstract idea into a concrete, bounded direction, then observation before formalism,
+  invariants, symmetry, dimensional analysis, and state-variable discovery, followed
   by formulation, proof strategy, and adversarial validation. No equations before structure,
   no constants without a way to measure them.
 allowed-tools: Read, Write, Glob, Grep, WebSearch, WebFetch, TodoWrite
@@ -27,6 +28,19 @@ Every tool below is a different lens on that one question. Invariants are things
 true under change. Symmetries are ways to transform the description without changing the
 truth. Dimensional analysis finds truths that don't depend on your choice of units. New state
 variables are re-descriptions that make what's true easier to see.
+
+## Underutilization — the common thread of breakthroughs
+
+Look for the thing that is already there but only partly in use. The most common shape of a
+breakthrough — systematic or mathematical — is not the invention of something new but the
+recognition that an existing ingredient was **underutilized**: a resource, a degree of freedom,
+a symmetry, a state variable, a piece of data, a constraint. Someone finally put the neglected
+thing to work, and the field moved. Ask it reflexively of everything in your inventory: what
+is this capable of that the current description is not using? Underutilized invariant,
+underutilized symmetry, underutilized variable or dimension, underutilized data. When the
+model fights you with fudge terms, when the system "shouldn't" be able to do what you need,
+the missing ingredient is rarely novel — it is the underutilized thing nobody has put to work
+yet.
 
 ## Two modes — know which one you're in
 
@@ -70,6 +84,85 @@ mode and asking what structure would make the fudge term unnecessary.
    (what shape does this have), symbolic (equations and relations), numerical (what happens when
    I simulate a rough version). Getting stuck in one register, usually the symbolic, is the single
    most common reason smart, technically skilled people fail to produce original applied mathematics.
+
+---
+
+# Stage -1 — From an abstract idea to a tractable direction
+
+Most real applied-math work does not start with a system in front of you. It starts with a vague
+itch — "there should be a better way to route this," "trust decays somehow," "this market feels
+unstable" — with no system boundary, no entities, no obvious starting point. Stage 0 assumes you
+already know what to observe. This stage is about getting there: turning an abstract idea into a
+concrete-enough system that Stage 0 can begin. Skipping it is why smart people stall before they
+even reach an equation — not from lack of technique, but from never having pinned the idea down
+enough to apply any technique to.
+
+**The abstract-idea trap.** An abstract idea feels like it already contains the problem, but it is
+almost always a *pointer* to a family of possible problems, not a problem itself. "Trust decays"
+could mean a decay rate in a single relationship, a network-wide contagion of distrust, a Bayesian
+belief update, or a game-theoretic equilibrium shift — four entirely different pieces of
+mathematics, all honestly described by the same three words. The work of this stage is collapsing
+that pointer down to one specific, boundaried instance you can actually put an inventory to.
+
+## Brainstorming toward a starting direction
+
+The goal of brainstorming here is not to solve anything — it's to generate enough concrete
+candidate framings that at least one is specific enough to start Stage 0 on. Breadth before depth.
+
+- **Restate the idea five different ways, each in a different register.** Say it as a story about
+  specific people or objects. Say it as a question. Say it as a claim someone could disagree with.
+  Say it as a single sentence a ten-year-old would understand. Say it as what would have to be
+  false for the idea to be wrong. Each restatement surfaces a different candidate system boundary;
+  the one that resists restating cleanly is usually where the real ambiguity lives.
+- **Ask "compared to what?" and "under what change?"** An abstract idea is rarely about an absolute
+  quantity — it's almost always implicitly comparative or about something changing. Naming the
+  implicit comparison or the implicit change turns "this is unstable" into "this is more sensitive
+  to X than [some reference] is," which is a sentence you can start building an inventory from.
+- **Generate small, concrete instances before generating theory.** List five to ten specific
+  situations the abstract idea would apply to — real or hypothetical, doesn't matter yet. Don't
+  pick one. Look across the list for what's common to all of them versus what's specific to each;
+  the common part is the actual content of the abstract idea, and it's usually much narrower and
+  more concrete than the original phrase suggested.
+- **Ask what would count as evidence the idea is true, and what would count as evidence it's
+  false.** If nothing observable would move either way, the idea isn't yet a candidate for applied
+  mathematics — it's still philosophy, and needs another round of narrowing before Stage 0 can
+  begin. If you can name even one observable that would move, work backward from that observable
+  to what system produces it.
+- **Deliberately generate bad or extreme framings and see what they rule out.** Push the idea to
+  a framing that's obviously too narrow, then to one that's obviously too broad. The useful framing
+  is usually somewhere on the path between the two, and having named both ends makes it much
+  faster to recognize when you've drifted back toward either.
+- **Ask who has run into a version of this before, even under a completely different name.** You
+  are not searching for the answer — you're searching for candidate system boundaries and
+  vocabularies other fields have already found useful, to be stress-tested rather than imported.
+  This is a rough pass; Stage 0's discipline (naive re-description, no borrowed vocabulary) still
+  applies once a direction is picked.
+- **Timebox this stage explicitly.** Brainstorming can expand indefinitely because an abstract idea
+  has no natural boundary to signal "enough." Set a fixed, short amount of effort — generate the
+  restatements, the concrete instances, and the extreme framings, then force a choice. A mediocre
+  starting direction that's actually pinned down is worth more than an unresolved search for the
+  perfect one, since Stage 0's observation work will itself correct a merely-mediocre choice.
+
+## Converging on a direction to hand to Stage 0
+
+- **Pick the most concrete instance from your brainstormed list, not the most general one.**
+  Generality is something to discover on the way out, not something to start with — a single
+  concrete instance, observed carefully, usually generalizes further than an attempt to model the
+  abstraction directly, because the concrete instance forces you to confront details an abstract
+  framing lets you skip.
+- **State the chosen direction as a system with a boundary**, explicitly: what's inside, what's
+  outside, what's held fixed versus what's allowed to vary. An abstract idea has no boundary by
+  default; drawing one — even an admittedly provisional one — is what makes Stage 0's inventory
+  possible at all.
+- **Write down the other candidate framings you didn't pick, and why.** They are not wasted work.
+  If the chosen direction stalls or produces a degenerate model, the fastest recovery is usually
+  switching to one of the other framings already generated here rather than brainstorming from
+  scratch — and a framing that looked worse at this stage sometimes turns out to be the one that
+  actually has usable structure, which you can only discover once Stage 0 has been run on it.
+- **Hand off condition:** you're ready to leave this stage once you can state the idea as a single
+  bounded system, in plain language, with at least a rough sense of what would be observable about
+  it. You do not need to know yet what's an entity versus an action versus a constraint — that's
+  Stage 0's job. You only need enough of a boundary that Stage 0 has something concrete to look at.
 
 ---
 
@@ -667,6 +760,11 @@ Consult when a research effort feels stuck:
 
 # Working checklist
 
+**Abstract idea → direction** — Idea restated five ways in different registers? Implicit comparison
+or implicit change named? Concrete instances generated and their common core extracted? Falsifying
+observable identified? Extreme framings generated to bracket the useful one? Brainstorming timeboxed
+and a single concrete direction chosen, with the boundary of the system stated explicitly?
+
 **Observation** — Plain-language inventory of entities, actions, measurable quantities, constraints? Described without
 specialized vocabulary or analogy to a known model? Seen in at least three representations? Talked to whoever knows the system
 best? Spent real time on the boring parts?
@@ -723,6 +821,7 @@ from every failed guess? Checked all four stopping conditions before committing 
 # Output shape
 
 ```markdown
+## Abstract idea → chosen direction (restatements, concrete instances, boundary drawn, framings rejected and why)
 ## System (plain language, no specialized vocabulary)
 ## Inventory: entities / actions / measurable quantities + units / constraints
 ## Representations examined (diagram, time series, hand-worked example)
