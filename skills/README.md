@@ -1,6 +1,6 @@
 # Deepiri Axiom skills library
 
-**72 packaged skills** installed by `./setup.sh` into:
+**73 packaged skills** installed by `./setup.sh` into:
 
 | Target | Path |
 |--------|------|
@@ -28,3 +28,4 @@ python3 scripts/generate_skills.py
 - **Operations** — axiom-observability, axiom-incident-response, axiom-rate-limiting
 - **DX** (cont.) — axiom-onboarding-new-dev
 - **Research** — applied-math
+- **QA** — deepiri-qa-workflow
