@@ -3,14 +3,11 @@
 test:
 	python3 -m pytest -q
 
-setup:
-	./setup.sh
+setup install:
+	./install.sh
 
 detect:
-	python3 setup.py detect --write --no-spinner
+	./install.sh detect --write
 
 doctor:
-	python3 setup.py doctor --no-spinner
-
-install:
-	python3 setup.py install --no-spinner
+	./install.sh doctor

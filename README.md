@@ -2,9 +2,8 @@
 
 Install **Deepiri Axiom** — the **canonical Deepiri systems architect** — into your AI tools: **Cursor**, **Claude Code**, **GitHub Copilot**, **Gemini CLI**, and **OpenCode**. Prompts are **doc-grounded** (`docs/DOCUMENTATION_INDEX.md`, `docs/architecture/*`) and carry the **full Team-Deepiri org repo map** (~50+ repos) so the installed agent can act as a **1-on-1 Deepiri expert**, with or without a local clone.
 
-- **Ecosystem-aware** — `./setup.sh` auto-detects your device, model providers, AI apps, and sibling Deepiri clones; links them into `.axiom/ecosystem.json` and injects live context into prompts.
-- **No runtime pip dependencies** — only Python 3.10+ stdlib (pytest optional for dev/CI).
-- **Spinner** during install (disable with `--no-spinner` or in non-TTY).
+- **Ecosystem-aware** — `./install.sh` auto-detects your device, model providers, AI apps, and sibling Deepiri clones; links them into `.axiom/ecosystem.json` and injects live context into prompts.
+- **No Python required for install** — pure bash (`jq` optional for JSON merge / richer manifests).
 - **Backups** — existing files are saved as `*.bak` before overwrite (skip with `--force`).
 - **Transparent** — the full prompt lives in [`prompts/`](prompts); there are no hidden directives.
 
@@ -13,19 +12,20 @@ Install **Deepiri Axiom** — the **canonical Deepiri systems architect** — in
 ```bash
 git clone https://github.com/Team-Deepiri/deepiri-axiom.git
 cd deepiri-axiom
-./setup.sh
+./install.sh
 ```
 
-`./setup.sh` will:
+`./install.sh` will:
 
 1. Scan hardware, model providers (Ollama, API keys), and installed AI CLIs
 2. Discover sibling `deepiri-*` / `diri-*` repos in your workspace
 3. Write `.axiom/ecosystem.json` and inferred repo link graph
-4. Install Axiom into Cursor, Claude, Copilot, Gemini, OpenCode (auto-selected from detection)
+4. Install Axiom into Cursor, Claude, Copilot, Gemini, OpenCode (from detection / `--tools`)
 5. Install **73 packaged skills** (gateway, Cyrex, Persola, vizult, AXIOM modes, engineering-practice skills, …) to `.cursor/skills/` and `.claude/skills/`
 6. Run `doctor` health checks
 
-Options: `--detect` (scan only), `--doctor`, `--target PATH`, `--no-global`. See `./setup.sh --help`.
+Options: `--detect` (scan only), `--doctor`, `--target PATH`, `--no-global`. See `./install.sh --help`.  
+(`./setup.sh` remains a thin wrapper that execs `./install.sh`.)
 
 ## 1-on-1 Deepiri expert (no target repo needed)
 
@@ -34,9 +34,9 @@ If you're a new contributor and haven't cloned `deepiri-platform` yet, you can s
 ```bash
 git clone https://github.com/Team-Deepiri/deepiri-axiom.git
 cd deepiri-axiom
-python3 setup.py install --target . --no-global   # skip if you only want user-level
-# or, user-level only (recommended for new devs):
-python3 setup.py install
+./install.sh install --target . --no-global   # project only
+# or, user-level included (recommended for new devs):
+./install.sh install
 ```
 
 The user-level install writes:
@@ -46,7 +46,7 @@ The user-level install writes:
 
 Both carry the embedded org repo map from [`prompts/deepiri-context.md`](prompts/deepiri-context.md), so you can ask questions like *"which repo owns Persola fine-tuning?"* or *"where does an external Notion webhook land?"* and get a grounded answer before you clone anything.
 
-When you do clone a specific Deepiri repo, re-run `python3 setup.py install --target /path/to/that/repo` to also write **project-level** files and generate the live **target repo snapshot** (workspaces, packages, submodules) alongside the org map.
+When you do clone a specific Deepiri repo, re-run `./install.sh install --target /path/to/that/repo` to also write **project-level** files and generate the live **target repo snapshot** alongside the org map.
 
 ## Team setup (one command for any dev)
 
@@ -54,7 +54,7 @@ You do **not** need to pick tools or read the rest of this doc to get started.
 
 ```bash
 cd path/to/deepiri-axiom
-python3 setup.py install --target /path/to/your/repo
+./install.sh install --target /path/to/your/repo
 ```
 
 That installs **every** integration (Cursor, Claude Code, Copilot, Gemini, OpenCode) into the target repo and, by default, your **user profile** (`~/.cursor/agents/deepiri-axiom.md`, `~/.gemini/deepiri-axiom.md`) so the same agents work in any folder.
@@ -62,45 +62,42 @@ That installs **every** integration (Cursor, Claude Code, Copilot, Gemini, OpenC
 Same thing, explicit name:
 
 ```bash
-python3 setup.py bootstrap --target /path/to/your/repo
+./install.sh bootstrap --target /path/to/your/repo
 ```
 
-**CI / no dotfiles:** `python3 setup.py install --target . --no-global`  
+**CI / no dotfiles:** `./install.sh install --target . --no-global`  
 **Lighter install** (skip OpenCode files unless `opencode` is on `PATH`): `--tools auto`
 
-## CLI layout
+## Layout
 
 | Path | Role |
 |------|------|
-| `setup.py` | Thin entry: adds repo root to `sys.path`, calls `cli.main.main()` |
-| `cli/main.py` | `argparse` subcommands (`install`, `bootstrap`, `subagent`, `list-tools`, `detect`, `link`, `doctor`, `status`), legacy argv normalization |
-| `cli/installer.py` | Template rendering, writes, spinner, global install |
-| `cli/repo_cartography.py` | Install-time target-repo snapshot (npm workspaces, services, submodules) fed into prompts |
-| `cli/skills_installer.py` | Installs the packaged skill library into `.cursor/skills/`, `.claude/skills/` |
-| `cli/__main__.py` | Enables `python3 -m cli` |
-| `ecosystem/` | Device/provider/app/repo scanners, manifest, and doctor checks backing `detect`, `link`, `doctor`, `status` — see `docs/ECOSYSTEM.md` |
-
-Same behavior as common internal CLIs: **commands** are functions (`cmd_install`, `cmd_list_tools`) bound with `set_defaults(func=...)`.
+| `install.sh` | **Primary entry** — detect, install, doctor, status (pure bash) |
+| `setup.sh` | Compat wrapper → `install.sh` |
+| `cli/` | Optional Python library (tests / advanced); not required to install |
+| `cli/installer.py` | Template rendering helpers (optional; `install.sh` is the supported path) |
+| `cli/skills_installer.py` | Optional Python skill installer (parity with `install.sh` skills copy) |
+| `ecosystem/` | Optional scanners/doctor used by `python3 -m cli` — see `docs/ECOSYSTEM.md` |
+| `skills/` | Packaged Agent Skills catalog |
+| `prompts/` / `templates/` | Prompt bodies and tool templates |
 
 ## Quick start
 
-From the `deepiri-axiom` repo, **`deepiri-platform`** next to it is the default `--target` if that folder exists; otherwise the CLI walks up from the current directory to find a matching project root.
+From the `deepiri-axiom` repo, **`deepiri-platform`** next to it is the default `--target` if that folder exists; otherwise the installer walks up from the current directory to find a git root.
 
 ```bash
-python3 setup.py
-# equivalent:
-python3 setup.py install
-python3 setup.py bootstrap
-python3 -m cli install
+./install.sh
+# equivalent focused installs:
+./install.sh install
+./install.sh bootstrap
+./install.sh subagent
 ```
 
-Explicit target (recommended in docs for clarity):
+Explicit target:
 
 ```bash
-python3 setup.py install --target /path/to/deepiri-platform
+./install.sh install --target /path/to/deepiri-platform
 ```
-
-**Legacy:** `python3 setup.py --dry-run` is rewritten to `python3 setup.py install --dry-run` (no subcommand required).
 
 ### Subcommands
 
@@ -112,16 +109,15 @@ python3 setup.py install --target /path/to/deepiri-platform
 | `list-tools` | Print PATH hints (`claude`, `gemini`, `opencode`); use with `--tools auto` if you want conditional OpenCode |
 | `detect` | Scan device, providers, apps, sibling repos (`--write` persists manifest) |
 | `link` | Refresh `.axiom/ecosystem.json` and repo link graph |
-| `doctor` | Health checks (Python version, manifest, agent install) |
+| `doctor` | Health checks (manifest, agent install, skills pack) |
 | `status` | Show ecosystem manifest summary |
 
 ### Skills library
 
-**73 skills** in [`skills/`](skills/) install with `./setup.sh` to `.cursor/skills/`, `.claude/skills/`, and `~/.cursor/skills/`. See `skills/README.md`. Regenerate: `python3 scripts/generate_skills.py`
+**73 skills** in [`skills/`](skills/) install with `./install.sh` to `.cursor/skills/`, `.claude/skills/`, and `~/.cursor/skills/`. See `skills/README.md`. Regenerate catalog: `python3 scripts/generate_skills.py` (dev only).
 
 ```bash
-python3 setup.py list-tools
-python3 -m cli list-tools
+./install.sh list-tools
 ```
 
 ### `install` options
@@ -175,22 +171,22 @@ Older Cursor installs may still have `.cursor/rules/deepiri-platform.md` — rem
 
 ## Contents
 
-- `docs/ECOSYSTEM.md` — what `./setup.sh` / `detect` / `link` scan and write to `.axiom/ecosystem.json`.
-- `scripts/install-subagent-here.sh` — one-shot wrapper: runs `setup.py subagent --target <git root of cwd>` from inside any target repo.
+- `docs/ECOSYSTEM.md` — what `./install.sh` / `detect` / `link` scan and write to `.axiom/ecosystem.json`.
+- `scripts/install-subagent-here.sh` — one-shot wrapper: runs `./install.sh subagent --target <git root of cwd>` from inside any target repo.
 - `scripts/generate_skills.py` — regenerates the packaged skill library in `skills/` from source (run after editing the skills catalog).
 - `prompts/axiom-core.md` — full AXIOM master prompt (no IDE frontmatter).
 - `prompts/deepiri-context.md` — **Deepiri Genius identity + full Team-Deepiri org repo map** (35 public repos, categorized), service boundaries, and 1-on-1 expert-mode guidance.
 - `prompts/axiom-condensed.md` — short AXIOM behavior for CLAUDE/GEMINI templates (carries a one-line repo pointer).
 - `prompts/copilot-brief.md` — concise Copilot instructions with a compact repo map for short-context tools.
 - `prompts/axiom-branch-tools.md` — git / branch orientation policy for cross-service work.
-- `templates/**` — `{{PLACEHOLDER}}` templates (and static snippets) filled by `cli/installer.py`.
+- `templates/**` — `{{PLACEHOLDER}}` templates (and static snippets) filled by `./install.sh`.
 - `templates/claude/*` — Claude Code agent, skill, rules, command, and JSON settings templates.
 - `templates/cursor/*` — Cursor agent, rule (`.mdc`), `mcp.json`, `AGENTS.md`, `.cursorignore` templates.
 - `templates/gemini/*` — `GEMINI.md`, `settings.json`, `geminiignore` templates.
 - `templates/opencode/*` — `instructions.md`, `opencode.json`, `agents/`, `commands/` templates.
 - `templates/copilot/*` — repo-wide and path-specific Copilot instruction templates.
 
-Regenerate after editing prompts or templates by re-running `python3 setup.py install` (or `python3 -m cli install`).
+Regenerate after editing prompts or templates by re-running `./install.sh install`.
 
 ## License
 

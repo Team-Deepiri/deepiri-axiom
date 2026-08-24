@@ -14,7 +14,7 @@ from ecosystem.scanner import scan_ecosystem
 
 
 def _normalize_argv(argv: list[str]) -> list[str]:
-    """Legacy: ``python setup.py --dry-run`` → ``python setup.py install --dry-run``."""
+    """Legacy: bare flags → ``install`` subcommand (prefer ``./install.sh``)."""
     if len(argv) <= 1:
         return argv + ["install"]
     known = (
@@ -101,7 +101,7 @@ def cmd_status(args: argparse.Namespace) -> int:
     target = (args.target or find_default_target()).resolve()
     manifest = load_manifest(target)
     if manifest is None:
-        print(f"No manifest at {manifest_path(target)} — run ./setup.sh or `setup.py detect --write`")
+        print(f"No manifest at {manifest_path(target)} — run ./install.sh or `./install.sh detect --write`")
         return 1
     print(f"Status @ {target}")
     print(f"  generated: {manifest.generated_at}")
