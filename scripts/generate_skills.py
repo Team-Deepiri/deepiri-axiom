@@ -421,6 +421,67 @@ GPU-heavy creative pipeline — check zepgpu/gpu-utils for compute paths.""",
 
 C++/GPU analysis — distinct from product microservices; cite egottol docs for protocol sim.""",
     ),
+    (
+        "axiom-systematic-debugging",
+        "Generic 4-phase root-cause loop for any language or service, inside or outside AXIOM DEBUG mode.",
+        """Use for any bug hunt, not just Deepiri-flagged ones — this is the mechanics `axiom-debug` assumes you already know.
+
+## Loop
+1. **Reproduce** — get a minimal, reliable repro before touching code. No repro, no fix.
+2. **Localize** — bisect the failure to the smallest unit (function, request hop, migration step) that still shows it.
+3. **Hypothesize and falsify** — form one hypothesis at a time, find the test that would disprove it, run it. Do not stack unverified hypotheses.
+4. **Fix at the root** — patch the cause, not the symptom; if the fix is a workaround, say so explicitly and file the real fix.
+
+State confidence at each step: CERTAIN | HIGH | MODERATE | HYPOTHESIS | UNKNOWN. Never report a fix as done on a HYPOTHESIS-level root cause.""",
+    ),
+    (
+        "axiom-tdd",
+        "RED-GREEN-REFACTOR discipline for new code across Node, Python, Go, and Rust Deepiri services.",
+        """Use when adding new behavior, not when characterizing legacy code (write characterization tests first there instead).
+
+## Loop
+1. **RED** — write a failing test that encodes the requirement, run it, confirm it fails for the expected reason.
+2. **GREEN** — write the minimum code to pass. No extra abstraction, no speculative generality.
+3. **REFACTOR** — clean up with the safety net green; re-run tests after every structural change.
+
+Match the owning service's existing test runner (`pytest`, `jest`/`vitest`, `go test`, `cargo test`) — don't introduce a new one for a single feature.""",
+    ),
+    (
+        "axiom-verification",
+        "Do not report a task done until the fix is confirmed against the real symptom, not just \"it should work now.\"",
+        """Triggers: about to say "fixed", "done", "should work", or hand back a task.
+
+## Checklist before claiming completion
+- Re-run the exact reproduction steps (or failing test) that proved the bug existed.
+- For UI changes: actually load it and interact with the golden path, per this repo's own CLAUDE.md rule.
+- For migrations: confirm against a real (or seeded) database, not just that Prisma generated cleanly.
+- If verification isn't possible in this environment, say so explicitly — never claim success you didn't check.""",
+    ),
+    (
+        "axiom-migration-safety",
+        "Prisma migration checklist enforcing per-service schema ownership across Deepiri's Node services.",
+        """Applies to `deepiri-core-api`, `deepiri-auth-service`, `deepiri-external-bridge-service`, `deepiri-language-intelligence-service` — each owns its own Postgres schema and Prisma migrations.
+
+## Checklist
+- Never write a migration for a table owned by another service — cross-service data flows over HTTP/queue, never a shared migration.
+- Additive first: new nullable columns / new tables before any destructive `DROP`/`NOT NULL` tightening.
+- Backfills run as a separate step from schema change on tables with meaningful production rows; check locking behavior under concurrent writes.
+- Verify the migration against a local or seeded Postgres, not just `prisma generate` succeeding.
+- Note rollback: can this migration be reverted without data loss? If not, say so before merging.""",
+    ),
+    (
+        "axiom-writing-plans",
+        "Structured implementation plans with explicit human checkpoints for multi-file or cross-repo Deepiri changes.",
+        """Use before starting any change that spans more than one file with non-obvious ordering, or touches more than one Deepiri repo.
+
+## Plan shape
+1. **Goal** — one sentence, the observable outcome.
+2. **Steps** — ordered, each naming the file/repo it touches and why that order matters (e.g., shared lib bump before dependents via `deepiri-cascade`).
+3. **Checkpoints** — where you stop and confirm with the user before continuing (schema changes, anything touching `main`, anything crossing service boundaries).
+4. **Verification** — how each step will be confirmed (test command, manual repro, migration check).
+
+Keep it as a plan artifact the user approves, not prose buried in a chat reply — pair with `executing-plans` for the run.""",
+    ),
 ]
 
 

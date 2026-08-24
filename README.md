@@ -19,9 +19,9 @@ cd deepiri-axiom
 
 1. Scan hardware, model providers (Ollama, API keys), and installed AI CLIs
 2. Discover sibling `deepiri-*` / `diri-*` repos in your workspace
-3. Write `.axiom/ecosystem.json`
+3. Write `.axiom/ecosystem.json` and inferred repo link graph
 4. Install Axiom into Cursor, Claude, Copilot, Gemini, OpenCode (from detection / `--tools`)
-5. Install **46 packaged skills** to `.cursor/skills/` and `.claude/skills/`
+5. Install **73 packaged skills** (gateway, Cyrex, Persola, vizult, AXIOM modes, engineering-practice skills, …) to `.cursor/skills/` and `.claude/skills/`
 6. Run `doctor` health checks
 
 Options: `--detect` (scan only), `--doctor`, `--target PATH`, `--no-global`. See `./install.sh --help`.  
@@ -75,6 +75,9 @@ Same thing, explicit name:
 | `install.sh` | **Primary entry** — detect, install, doctor, status (pure bash) |
 | `setup.sh` | Compat wrapper → `install.sh` |
 | `cli/` | Optional Python library (tests / advanced); not required to install |
+| `cli/installer.py` | Template rendering helpers (optional; `install.sh` is the supported path) |
+| `cli/skills_installer.py` | Optional Python skill installer (parity with `install.sh` skills copy) |
+| `ecosystem/` | Optional scanners/doctor used by `python3 -m cli` — see `docs/ECOSYSTEM.md` |
 | `skills/` | Packaged Agent Skills catalog |
 | `prompts/` / `templates/` | Prompt bodies and tool templates |
 
@@ -102,6 +105,7 @@ Explicit target:
 |---------|---------|
 | `install` | Write **all** tool templates (default `--tools all`) + user-level agents unless `--no-global` |
 | `bootstrap` | Same as `install` — onboarding-friendly name |
+| `subagent` | **Cursor only, fast path** — `.cursor/agents/`, `.cursor/rules/`; no Claude/Copilot/Gemini/OpenCode files. Add `--with-global` to also write `~/.cursor/agents/deepiri-axiom.md`. Same as `install --preset subagent` |
 | `list-tools` | Print PATH hints (`claude`, `gemini`, `opencode`); use with `--tools auto` if you want conditional OpenCode |
 | `detect` | Scan device, providers, apps, sibling repos (`--write` persists manifest) |
 | `link` | Refresh `.axiom/ecosystem.json` and repo link graph |
@@ -110,7 +114,7 @@ Explicit target:
 
 ### Skills library
 
-**46 skills** in [`skills/`](skills/) install with `./install.sh` to `.cursor/skills/`, `.claude/skills/`, and `~/.cursor/skills/`. See `skills/README.md`. Regenerate catalog: `python3 scripts/generate_skills.py` (dev only).
+**73 skills** in [`skills/`](skills/) install with `./install.sh` to `.cursor/skills/`, `.claude/skills/`, and `~/.cursor/skills/`. See `skills/README.md`. Regenerate catalog: `python3 scripts/generate_skills.py` (dev only).
 
 ```bash
 ./install.sh list-tools
@@ -128,6 +132,7 @@ Explicit target:
 | `--dry-run` | Show paths only; no writes |
 | `--force` | Overwrite without `.bak` |
 | `--no-spinner` | No animated progress (CI / logs) |
+| `--preset {full,subagent}` | `full` (default) — every integration. `subagent` — shorthand for the `subagent` subcommand (Cursor only, implies `--no-global`) |
 
 Auto-detect target: prefers `../deepiri-platform` next to this repo, then walks up from cwd for `deepiri-platform/` or a tree with `docs/DOCUMENTATION_INDEX.md` + `package.json`.
 
@@ -166,6 +171,9 @@ Older Cursor installs may still have `.cursor/rules/deepiri-platform.md` — rem
 
 ## Contents
 
+- `docs/ECOSYSTEM.md` — what `./install.sh` / `detect` / `link` scan and write to `.axiom/ecosystem.json`.
+- `scripts/install-subagent-here.sh` — one-shot wrapper: runs `./install.sh subagent --target <git root of cwd>` from inside any target repo.
+- `scripts/generate_skills.py` — regenerates the packaged skill library in `skills/` from source (run after editing the skills catalog).
 - `prompts/axiom-core.md` — full AXIOM master prompt (no IDE frontmatter).
 - `prompts/deepiri-context.md` — **Deepiri Genius identity + full Team-Deepiri org repo map** (35 public repos, categorized), service boundaries, and 1-on-1 expert-mode guidance.
 - `prompts/axiom-condensed.md` — short AXIOM behavior for CLAUDE/GEMINI templates (carries a one-line repo pointer).
