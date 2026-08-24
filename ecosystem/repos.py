@@ -175,7 +175,7 @@ def _inspect_repo_dir(
         has_git=(path / ".git").exists(),
         remote_url=remote,
         default_branch=_git_default_branch(path) if remote else "",
-        has_setup_sh=(path / "setup.sh").is_file(),
+        has_setup_sh=(path / "install.sh").is_file() or (path / "setup.sh").is_file(),
         has_pyproject=(path / "pyproject.toml").is_file(),
         has_package_json=(path / "package.json").is_file(),
         discovery=discovery,

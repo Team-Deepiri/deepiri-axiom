@@ -10,7 +10,7 @@ from ecosystem.repos import LocalRepo, discover_local_repos, repo_name_from_remo
 def test_scan_finds_axiom_repo(tmp_path: Path):
     axiom = tmp_path / "deepiri-axiom"
     axiom.mkdir()
-    (axiom / "setup.py").write_text("# stub")
+    (axiom / "install.sh").write_text("#!/bin/bash\n")
     repos = scan_sibling_repos(axiom)
     names = [r.name for r in repos]
     assert "deepiri-axiom" in names

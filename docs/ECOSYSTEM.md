@@ -15,12 +15,12 @@ Deepiri Axiom v2 scans your machine and sibling repos, then injects live context
 ## Commands
 
 ```bash
-./setup.sh                    # detect + link + install + doctor
-./setup.sh --detect           # write .axiom/ecosystem.json only
-python3 setup.py detect --write
-python3 setup.py link
-python3 setup.py status
-python3 setup.py doctor
+./install.sh                    # detect + link + install + doctor
+./install.sh --detect           # write .axiom/ecosystem.json only
+./install.sh detect --write
+./install.sh link
+./install.sh status
+./install.sh doctor
 ```
 
 ## Org catalog (dynamic, not hardcoded)
@@ -39,6 +39,6 @@ Not only siblings in a `Deepiri/` folder:
 
 ## Manifest
 
-Machine-local JSON at `.axiom/ecosystem.json` (gitignored). Refreshed on every `./setup.sh` run.
+Machine-local JSON at `.axiom/ecosystem.json` (gitignored). Refreshed on every `./install.sh` run.
 
 The installer injects a markdown summary as `{{ECOSYSTEM_CONTEXT}}` in Cursor, Claude, Gemini, and OpenCode templates.

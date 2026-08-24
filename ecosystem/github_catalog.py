@@ -268,7 +268,7 @@ def refresh_org_catalog(
 def catalog_markdown(entries: list[dict], *, source: str) -> str:
     if not entries:
         return (
-            "_Org catalog unavailable — run `./setup.sh` online or set GITHUB_TOKEN. "
+            "_Org catalog unavailable — run `./install.sh` online or set GITHUB_TOKEN. "
             "Local clones are still detected via git remotes._\n"
         )
     lines = [
