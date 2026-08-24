@@ -1,6 +1,6 @@
 # Deepiri Axiom skills library
 
-**46 packaged skills** installed by `./setup.sh` into:
+**46 packaged skills** installed by `./install.sh` into:
 
 | Target | Path |
 |--------|------|

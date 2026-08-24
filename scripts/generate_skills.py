@@ -21,7 +21,7 @@ SKILLS: list[tuple[str, str, str]] = [
 ## Modes
 Announce: SCAN | ARCHITECT | REFACTOR | DEBUG | TEACH | REVIEW.
 
-Run `./setup.sh` to refresh `.axiom/ecosystem.json` with local clones and providers.""",
+Run `./install.sh` to refresh `.axiom/ecosystem.json` with local clones and providers.""",
     ),
     (
         "deepiri-ecosystem",
@@ -30,10 +30,10 @@ Run `./setup.sh` to refresh `.axiom/ecosystem.json` with local clones and provid
 
 ## Commands
 ```bash
-./setup.sh
-python3 setup.py detect --write
-python3 setup.py link
-python3 setup.py status
+./install.sh
+./install.sh detect --write
+./install.sh link
+./install.sh status
 ```
 
 Prefer **detected local paths** from the manifest over guessing clone locations.""",
@@ -191,7 +191,7 @@ New tools: explicit schemas, idempotency, timeout budgets, error surfaces for th
         "Local LLM serving with Ollama and deepiri-ollama-utils.",
         """Repos: `deepiri-ollama-utils`, local Ollama on :11434.
 
-Check `./setup.sh` / ecosystem manifest for available models.
+Check `./install.sh` / ecosystem manifest for available models.
 Prefer local inference when GPU present; document model tags in compose.""",
     ),
     (

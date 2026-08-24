@@ -9,10 +9,10 @@ Triggers: setup, sibling repos, device/GPU, model providers, linking clones.
 
 ## Commands
 ```bash
-./setup.sh
-python3 setup.py detect --write
-python3 setup.py link
-python3 setup.py status
+./install.sh
+./install.sh detect --write
+./install.sh link
+./install.sh status
 ```
 
 Prefer **detected local paths** from the manifest over guessing clone locations.

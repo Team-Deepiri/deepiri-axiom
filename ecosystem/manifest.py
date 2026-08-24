@@ -101,7 +101,7 @@ def manifest_markdown(manifest: EcosystemManifest) -> str:
         lines.append(f"- **Recommended axiom tools:** {', '.join(manifest.recommended_tools)}")
     lines.append("")
     lines.append(
-        "_Refresh with `./setup.sh` or `python3 setup.py detect --write`._"
+        "_Refresh with `./install.sh` or `./install.sh detect --write`._"
     )
     lines.append("")
     return "\n".join(lines)

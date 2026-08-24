@@ -45,7 +45,7 @@ def run_doctor(anchor: Path) -> list[CheckResult]:
             manifest is not None,
             ".axiom/ecosystem.json present"
             if manifest
-            else "missing — run ./setup.sh or `setup.py detect --write`",
+            else "missing — run ./install.sh or `./install.sh detect --write`",
         )
     )
 
@@ -59,7 +59,7 @@ def run_doctor(anchor: Path) -> list[CheckResult]:
             has_agent,
             "deepiri-axiom agent installed"
             if has_agent
-            else "not installed — run ./setup.sh",
+            else "not installed — run ./install.sh",
         )
     )
 
