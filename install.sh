@@ -17,7 +17,7 @@
 #   --detect  --doctor  --target DIR  --no-global  --help
 #
 # Install options:
-#   --target DIR   Project root (default: cwd git root, or sibling deepiri-platform)
+#   --target DIR   Project root (default: cwd git root, or sibling deepiri-control-plane / deepiri-platform)
 #   --tools LIST   all | auto | cursor,claude,copilot,gemini,opencode
 #   --dry-run      Print actions only
 #   --force        Overwrite without .bak
@@ -146,10 +146,13 @@ find_default_target() {
   fi
   local cwd axiom_parent sib
   cwd="$(pwd)"
-  # Dogfood: when inside axiom source, prefer sibling deepiri-platform
+  # Dogfood: when inside axiom source, prefer sibling deepiri-control-plane (else deepiri-platform)
   case "$cwd" in
     "$REPO_ROOT"|"$REPO_ROOT"/*)
-      sib="$(dirname "$REPO_ROOT")/deepiri-platform"
+      sib="$(dirname "$REPO_ROOT")/deepiri-control-plane"
+      if [ ! -d "$sib" ]; then
+        sib="$(dirname "$REPO_ROOT")/deepiri-platform"
+      fi
       if [ -d "$sib" ]; then
         abs_path "$sib"
         return

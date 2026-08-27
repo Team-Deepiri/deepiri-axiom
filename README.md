@@ -29,7 +29,7 @@ Options: `--detect` (scan only), `--doctor`, `--target PATH`, `--no-global`. See
 
 ## 1-on-1 Deepiri expert (no target repo needed)
 
-If you're a new contributor and haven't cloned `deepiri-platform` yet, you can still install the agent into your **user profile** and get expert Deepiri help in any folder:
+If you're a new contributor and haven't cloned `deepiri-control-plane` (local stack) or `deepiri-platform` (cloud portal) yet, you can still install the agent into your **user profile** and get expert Deepiri help in any folder:
 
 ```bash
 git clone https://github.com/Team-Deepiri/deepiri-axiom.git
@@ -83,7 +83,7 @@ Same thing, explicit name:
 
 ## Quick start
 
-From the `deepiri-axiom` repo, **`deepiri-platform`** next to it is the default `--target` if that folder exists; otherwise the installer walks up from the current directory to find a git root.
+From the `deepiri-axiom` repo, prefer sibling **`deepiri-control-plane`** (full local stack) as `--target` if present; else **`deepiri-platform`** (cloud portal); otherwise the installer walks up from the current directory to find a git root.
 
 ```bash
 ./install.sh
