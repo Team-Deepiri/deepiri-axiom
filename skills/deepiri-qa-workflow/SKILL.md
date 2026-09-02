@@ -27,7 +27,7 @@ environment via `team_dev_environments/qa-team/`, or onboarding a new QA enginee
 - **Branch checkout:** in the local directory of each affected submodule, checkout the branch the
   PR is built from — not `main`, and not a stale local branch with the same name.
 - **Environment initialization:** use the Docker scripts in
-  `your deepiri-platform clone under team_dev_environments/qa-team/`:
+  `your deepiri-control-plane clone; use ./setup-deepiri-dev.sh start qa-team`:
   - `start.sh` — bring the environment up.
   - `build.sh` — rebuild containers when the PR changes dependencies (lockfiles, Dockerfiles,
     base images) — a plain `start.sh` will silently run against stale images otherwise.

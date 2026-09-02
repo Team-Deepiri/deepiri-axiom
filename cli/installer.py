@@ -101,9 +101,10 @@ def find_default_target() -> Path:
     axiom = REPO_ROOT.resolve()
     cwd = Path.cwd().resolve()
     if cwd == axiom or axiom in cwd.parents:
-        sib = axiom.parent / "deepiri-platform"
-        if sib.is_dir():
-            return sib
+        for name in ("deepiri-control-plane", "deepiri-platform"):
+            sib = axiom.parent / name
+            if sib.is_dir():
+                return sib
     return _cwd_git_root(cwd)
 
 
