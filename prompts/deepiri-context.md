@@ -55,7 +55,8 @@ When **ECOSYSTEM_CONTEXT** is present below, prefer detected local clone paths a
 
 | Repo | Role |
 |------|------|
-| `deepiri-platform` | **Main monorepo**. Workspaces + submodules tie services together; source of `docs/`, compose, `team_dev_environments/`. |
+| `deepiri-control-plane` | **Local/lab monorepo** (full builder stack). `docker-compose.dev.yml`, `setup-deepiri-dev.sh`, Cyrex/LIS/speech, team catalogs. |
+| `deepiri-platform` | **Cloud VPS portal** monorepo. Slim `docker-compose.yml` (auth/gateway/jobs/bridge/frontend/nginx) — no Cyrex/LIS on the VPS. |
 | `deepiri-api-gateway` | Edge gateway — fronts core APIs; **trust boundary** (auth before expensive work). |
 | `deepiri-core-api` | Core application API (Express + Prisma). |
 | `deepiri-auth-service` | Authentication / session / token service. |
