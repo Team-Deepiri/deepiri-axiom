@@ -8,6 +8,13 @@ on:
       - 'docs/**'
       - '.gitignore'
       - 'LICENSE*'
+  push:
+    branches: [main, dev]
+    paths-ignore:
+      - '**/*.md'
+      - 'docs/**'
+      - '.gitignore'
+      - 'LICENSE*'
   workflow_dispatch:
 
 permissions:
