@@ -14,6 +14,13 @@ description: >-
 
 **Function:** One universal capability (what Deepiri actually is deep down — episodic memory · cited retrieval · speech→fields · agent runtime · graph continuum) → one sharp underserved niche → telephone network effects → expand skins later **same stack, no new science**.
 
+
+## CRITICAL: Quo is a PATTERN EXAMPLE, not a domain template
+
+Quo illustrates **shape only**: generalized capability → one sharp underserved niche → becomes a standard → network effects.
+**Do NOT** propose phone answering, outbound voice agents, AI receptionists, call centers, or anything that is "Quo but for X" / "OpenPhone AI clone."
+If your niche is telephony/voice GTM, **kill it** and pick another niche for the same universal capability.
+
 **HARD BAN:** No puck. No JetPuck. No BOM. No collar. No ESP32. No Exovra hardware. No wearable sensors. No predictive-maintenance IoT. No cold-storage hardware. Those lanes are Exovra (`ult-quo-puck` in exovra-jayden). This skill is Deepiri full-software only.
 
 ---
@@ -51,8 +58,8 @@ Telephone: one alone useless; everyone has one → must buy to function.
 4. **Jobs→Woz:** Jobs = 2026 law/trigger/annoyance + who pays today. Woz = elkedel / MemoryMesh / Topolsea / speech / Cyrex·PrismPipe / Crankl / Bedd / Synapse / LIS / control-plane.
 5. **Thiel:** unpopular insight. Google text box. Organic personal annoyance. Multi-million brand potential.
 6. **Assumption tests:** desirability / viability / feasibility / market access — week-1 kill gates.
-7. **Banned burned domains (do not duplicate):** Finality, Establish, DRAW, Latch, *ACK, Threshold, Curb, Eighteen, Refract, Doorstep, Present, Sitrep, Window, Callbook, Passdown, and any Exovra puck names (CALOR, VISIT, RATIO, etc.). Invent NEW names & NEW domains.
-8. **Hard reject:** generative content toys, generic AI copilots, construction punch, AP recovery rehash unless a truly new Quo spine, dog toys, Exovra hardware.
+7. **Banned burned domains (do not duplicate):** Finality, Establish, DRAW, Latch, *ACK, Threshold, Curb, Eighteen, Refract, Doorstep, Present, Sitrep, Window, Callbook, Passdown, PERMIT, CORDON, KEEL, RELAY, WARD, SPAWN, REHEAR, CHALK, HOST, GROUND, and any Exovra puck names (CALOR, VISIT, RATIO, etc.). Invent NEW names & NEW domains.
+8. **Hard reject:** phone/voice Quo clones (answering, outbound AI calls, receptionists), generative content toys, generic AI copilots, construction punch, AP recovery rehash unless a truly new Quo spine, dog toys, Exovra hardware.
 
 Compose with: `axiom-architect`, ecosystem / MemoryMesh / PrismPipe / Cyrex skills, market research in personal docs / product-design-docs when available.
 
