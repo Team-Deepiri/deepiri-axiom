@@ -2,18 +2,16 @@
 name: ult-quo-company
 description: >-
   Ultimate Quo-pattern company-domain discovery for Deepiri — full software only.
-  Universal stack capability → one underserved niche GTM (like Quo: AI → phone answering).
-  Jobs→Woz on Deepiri repos, 2026 triggers, telephone network effects, assumption tests.
-  Use when brainstorming Deepiri v0 company domains, PMF, or "what would Jobs see in the stack."
-  Deepiri only — never Exovra puck / BOM / hardware.
+  Quo is SHAPE only (universal capability → one underserved niche) — never clone
+  phone answering. Jobs→Woz on Deepiri repos, 2026 triggers, network effects,
+  assumption tests. Deepiri only — never Exovra puck / BOM / hardware.
 ---
 
 # ULT-QUO-COMPANY — Deepiri Quo-Pattern Domain Discovery
 
 **Role:** Find the Quo-pattern primary software company for Deepiri, Inc.
 
-**Function:** One universal capability (what Deepiri actually is deep down — episodic memory · cited retrieval · speech→fields · agent runtime · graph continuum) → one sharp underserved niche → telephone network effects → expand skins later **same stack, no new science**.
-
+**Function:** One universal capability (what Deepiri actually is deep down — episodic memory · cited retrieval · speech→fields as infra · agent runtime · graph continuum) → one sharp underserved niche → telephone network effects → expand skins later **same stack, no new science**.
 
 ## CRITICAL: Quo is a PATTERN EXAMPLE, not a domain template
 
@@ -52,14 +50,14 @@ Telephone: one alone useless; everyone has one → must buy to function.
 
 ## Execution rules (locked)
 
-1. **COMPANIES only** — not features, not SAP/Frame.io/Clearstory sidecars, not *ACK invoice packs.
-2. **Full software** — extract Deepiri repos as the product. No hardware BOM, no puck, no collar, no ESP.
+1. **COMPANIES / products**, not features, not SAP/Frame.io/Clearstory sidecars, not *ACK invoice packs.
 3. **Quo pattern:** one universal capability → one sharp underserved niche GTM → telephone/network effects → expand skins later same stack.
 4. **Jobs→Woz:** Jobs = 2026 law/trigger/annoyance + who pays today. Woz = elkedel / MemoryMesh / Topolsea / speech / Cyrex·PrismPipe / Crankl / Bedd / Synapse / LIS / control-plane.
-5. **Thiel:** unpopular insight. Google text box. Organic personal annoyance. Multi-million brand potential.
-6. **Assumption tests:** desirability / viability / feasibility / market access — week-1 kill gates.
-7. **Banned burned domains (do not duplicate):** Finality, Establish, DRAW, Latch, *ACK, Threshold, Curb, Eighteen, Refract, Doorstep, Present, Sitrep, Window, Callbook, Passdown, PERMIT, CORDON, KEEL, RELAY, WARD, SPAWN, REHEAR, CHALK, HOST, GROUND, and any Exovra puck names (CALOR, VISIT, RATIO, etc.). Invent NEW names & NEW domains.
-8. **Hard reject:** phone/voice Quo clones (answering, outbound AI calls, receptionists), generative content toys, generic AI copilots, construction punch, AP recovery rehash unless a truly new Quo spine, dog toys, Exovra hardware.
+5. **Stack is product.** Extract what we already have; no new science; speech is infra not the niche unless proven otherwise.
+6. **Telephone / network:** one tenant alone = demo; cohort / supply chain / regulator expectation = grid you must join to function.
+7. **Thiel + text box + organic annoyance.** Multi-million brand potential.
+8. **Assumption tests** with week-1 kill gates.
+9. **Hard reject:** phone/voice Quo clones, generative content toys, generic AI copilots, construction punch, AP recovery rehash unless a truly new spine, dog toys, Exovra hardware. **Banned burned names:** Finality, Establish, DRAW, Latch, *ACK, Threshold, Curb, Eighteen, Refract, Doorstep, Present, Sitrep, Window, Callbook, Passdown, PERMIT, CORDON, KEEL, RELAY, WARD, SPAWN, REHEAR, CHALK, HOST, GROUND, CANON, RIVET, FOLIO, STRAND, SEAL, DOCKET, BOLT, CLEAVE, VOUCH, GRAFT — invent NEW names & NEW domains.
 
 Compose with: `axiom-architect`, ecosystem / MemoryMesh / PrismPipe / Cyrex skills, market research in personal docs / product-design-docs when available.
 
@@ -67,12 +65,12 @@ Compose with: `axiom-architect`, ecosystem / MemoryMesh / PrismPipe / Cyrex skil
 
 For each domain:
 - Name (verb-able brand)
-- Generalized capability (the Quo universal)
-- Niche GTM (the phone-call wedge)
+- Generalized capability (the Quo universal — shape, not phones)
+- Niche GTM (sharp wedge — **not** telephony)
 - 2026 trigger + URL
 - Jobs/Woz mapping to Deepiri repos
 - Underserved / why incumbents ignore
-- Telephone / network effect
+- Telephone / network effect (adoption grid — not literal phones)
 - ≥4 revenue streams
 - Google text box query
 - Week-1 assumption test + kill criteria
