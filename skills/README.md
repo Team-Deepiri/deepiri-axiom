@@ -1,6 +1,6 @@
 # Deepiri Axiom skills library
 
-**73 packaged skills** installed by `./install.sh` into:
+**74 packaged skills** installed by `./install.sh` into:
 
 | Target | Path |
 |--------|------|
@@ -27,5 +27,5 @@ python3 scripts/generate_skills.py
 - **Engineering practice** — axiom-systematic-debugging, axiom-tdd, axiom-verification, axiom-migration-safety, axiom-writing-plans, axiom-code-review, axiom-security-review, axiom-performance-triage, axiom-dependency-audit, axiom-secrets-hygiene, axiom-api-contract-design, axiom-database-migrations, axiom-caching-strategy, axiom-feature-flags, axiom-error-handling, axiom-logging-standards, axiom-test-plan, axiom-tech-debt, axiom-pr-description, axiom-adr-writing
 - **Operations** — axiom-observability, axiom-incident-response, axiom-rate-limiting
 - **DX** (cont.) — axiom-onboarding-new-dev
-- **Research** — applied-math
+- **Research** — applied-math, math-bitch
 - **QA** — deepiri-qa-workflow
